@@ -11,8 +11,8 @@ bot.on("ready", () => {
 
 bot.on("message", (msg) => {
   if (msg.content === "ping") {
-    msg.reply("pong");
-    msg.channel.send("pong");
+    msg.reply("pong"); // tags the initial user who has sent the message
+    msg.channel.send("pong"); // ends a message to the channel without tagging anyone
   } else if (msg.content.startsWith("!kick")) {
     if (msg.mentions.users.size) {
       const taggedUser = msg.mentions.users.first();
