@@ -21,6 +21,7 @@ Discord bot built on Node.js
 
 ## Define Bot Permissions
 
-- Under Settings/OAuth2, define the scope of permissions for the bot. Default is `bot option`
+- Under Settings/OAuth2, define the scope of permissions for the bot. Select scope `bot`
+- Select all bot permissions and copy the URL generated
   > `permissions=0` indicates no set permissions
 - `https://discord.com/api/oauth2/authorize?client_id=DISCORD_BOT_CLIENT_ID&permissions=DISCORD_BOT_PERMISSIONS&scope=bot`
