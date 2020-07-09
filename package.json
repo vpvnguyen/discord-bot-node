@@ -1,0 +1,23 @@
+{
+  "name": "discord-bot-node",
+  "version": "1.0.0",
+  "description": "Discord bot built on Node.js",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/vpvnguyen/discord-bot-node.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/vpvnguyen/discord-bot-node/issues"
+  },
+  "homepage": "https://github.com/vpvnguyen/discord-bot-node#readme",
+  "dependencies": {
+    "dotenv": "^8.2.0"
+  }
+}
