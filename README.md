@@ -19,9 +19,10 @@ Discord bot built on Node.js
   > `CLIENT SECRET` will be used for auth token
 - Under Settings/Bot, add a bot user with `Add Bot`
 
-## Define Bot Permissions
+## Define Bot Permissions & Deploy
 
 - Under Settings/OAuth2, define the scope of permissions for the bot. Select scope `bot`
 - Select all bot permissions and copy the URL generated
   > `permissions=0` indicates no set permissions
-- `https://discord.com/api/oauth2/authorize?client_id=DISCORD_BOT_CLIENT_ID&permissions=DISCORD_BOT_PERMISSIONS&scope=bot`
+- Copy generated URL or use this example to create URL: `https://discord.com/api/oauth2/authorize?client_id=DISCORD_BOT_CLIENT_ID&permissions=DISCORD_BOT_PERMISSIONS&scope=bot`
+- Paste the URL into the browser. This should prompt to add the bot to a server
