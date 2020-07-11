@@ -24,6 +24,10 @@ bot.on("message", (msg) => {
   console.info(`Called command: ${command}`);
   console.log(`bot.commands`, bot.commands);
 
+  if (command === "!kill") {
+    exit(msg);
+  }
+
   if (!bot.commands.has(command)) return;
 
   try {
@@ -34,3 +38,20 @@ bot.on("message", (msg) => {
     msg.reply("there was an error trying to execute that command!");
   }
 });
+
+const exit = (msg) => {
+  let countDown = 5;
+  msg.channel.send(`Shutting down in ${countDown}...`);
+  setInterval(() => {
+    countDown--;
+    console.log(countDown);
+    if (countDown === 0) {
+      return msg.channel.send("Goodbye.");
+    }
+    return msg.channel.send(`${countDown}...`);
+  }, 1000);
+
+  setTimeout(() => {
+    return process.exit(22);
+  }, 6000);
+};
