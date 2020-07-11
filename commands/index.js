@@ -7,6 +7,9 @@ const commands = {
   stupidBot: require("./self/stupidBot"),
   // covid
   covid: require("./covid/covid"),
+  covidCountry: require("./covid/covid.country"),
+  covidStates: require("./covid/covid.states"),
+  covidState: require("./covid/covid.state"),
   // commands
   commands: {
     name: "!commands",
