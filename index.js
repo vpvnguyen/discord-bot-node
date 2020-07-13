@@ -9,8 +9,8 @@ const TOKEN = process.env.DISCORD_BOT_TOKEN;
 
 Object.keys(botCommands).map((key) => {
   bot.commands.set(botCommands[key].name, botCommands[key]);
-  console.log(botCommands);
-  console.log(botCommands[key].name, botCommands[key]);
+  //   console.log(botCommands);
+  //   console.log(botCommands[key].name, botCommands[key]);
 });
 
 bot.login(TOKEN);
@@ -22,7 +22,7 @@ bot.on("message", (msg) => {
   console.log(`args: ${args}`);
   const command = args.shift().toLowerCase();
   console.info(`Called command: ${command}`);
-  console.log(`bot.commands`, bot.commands);
+  //   console.log(`bot.commands`, bot.commands);
 
   if (command === "!kill") {
     exit(msg);
@@ -31,7 +31,9 @@ bot.on("message", (msg) => {
   if (!bot.commands.has(command)) return;
 
   try {
-    console.log(`bot.commands`, bot.commands);
+    // console.log(`bot.commands`, bot.commands);
+    console.log("BOT COMMANDS GET COMMAND");
+    console.log(bot.commands.get(command));
     bot.commands.get(command).execute(msg, args);
   } catch (error) {
     console.error(error);
