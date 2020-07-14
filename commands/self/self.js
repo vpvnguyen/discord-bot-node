@@ -3,7 +3,6 @@ const Self = {
   description: `self description`,
   execute(msg, args) {
     msg.reply("selfie?");
-    msg.channel.send("selfie?");
   },
 };
 
