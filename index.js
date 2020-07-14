@@ -9,8 +9,6 @@ const TOKEN = process.env.DISCORD_BOT_TOKEN;
 
 Object.keys(botCommands).map((key) => {
   bot.commands.set(botCommands[key].name, botCommands[key]);
-  //   console.log(botCommands);
-  //   console.log(botCommands[key].name, botCommands[key]);
 });
 
 bot.login(TOKEN);
@@ -18,20 +16,27 @@ bot.login(TOKEN);
 bot.on("ready", () => console.info(`Logged in as ${bot.user.tag}`));
 
 bot.on("message", (msg) => {
+  const prefix = "!";
+  if (!msg.content.startsWith(prefix)) return;
+  console.log("---msg.name---");
+  console.log(msg.author.username);
+  if (msg.author.username === "sugoi-bot") return;
+
   const args = msg.content.split(/ +/);
-  console.log(`args: ${args}`);
   const command = args.shift().toLowerCase();
+
+  console.log(`msg.content: ${msg.content}`);
+  console.log(`args: ${args}`);
   console.info(`Called command: ${command}`);
-  //   console.log(`bot.commands`, bot.commands);
 
   if (command === "!kill") {
     exit(msg);
   }
 
-  if (!bot.commands.has(command)) return;
+  if (!bot.commands.has(command))
+    return msg.reply("Huh? You rang? No comprende...");
 
   try {
-    // console.log(`bot.commands`, bot.commands);
     console.log("BOT COMMANDS GET COMMAND");
     console.log(bot.commands.get(command));
     bot.commands.get(command).execute(msg, args);
