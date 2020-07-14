@@ -44,8 +44,17 @@ const novelCovidApiMethods = {
   state: async (state) => {
     try {
       const response = await novelCovidApi.states({ state });
+      console.log(`Retrieving API data for: ${state}`);
       console.log(response);
-      return response;
+      if (response.message) return response.message;
+      let parsed = [
+        `${response.state}`,
+        `Total Cases: ${response.cases}`,
+        `Today's Cases: ${response.todayCases}`,
+        `Today's Deaths: ${response.todayDeaths}`,
+        `Total Deaths: ${response.deaths}`,
+      ];
+      return parsed;
     } catch (error) {
       console.error(error.message);
     }
