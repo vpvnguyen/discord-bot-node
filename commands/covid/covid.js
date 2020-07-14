@@ -1,4 +1,5 @@
 const novelCovidApi = require("../../utils/novelcovid.api");
+const messageLayout = require("../../utils/layout/message.layout");
 
 const covid = {
   name: "!covid",
@@ -12,8 +13,8 @@ const covid = {
       const parsedMessage = await mapper(msg, args);
       console.log(`---parsedMessage---`);
       console.log(parsedMessage);
-      //   const createMessage = await command.run();
-      await msg.channel.send(parsedMessage);
+      const formattedMessage = messageLayout(parsedMessage);
+      await msg.channel.send(formattedMessage);
     } catch (error) {
       console.error(error.message);
     }
