@@ -7,9 +7,9 @@ const commands = {
   stupidBot: require("./self/stupidBot"),
   // covid
   covid: require("./covid/covid"),
-  covidCountry: require("./covid/covid.country"),
-  covidStates: require("./covid/covid.states"),
-  covidState: require("./covid/covid.state"),
+  //   covidCountry: require("./covid/covid.country"),
+  //   covidStates: require("./covid/covid.states"),
+  //   covidState: require("./covid/covid.state"),
   // commands
   commands: {
     name: "!commands",
@@ -29,7 +29,9 @@ const ListOfCommands = () => {
   const commandName = commandKeys.map((keys) => {
     return commands[keys].name;
   });
-  return commandName.sort();
+
+  const sortCommandNames = commandName.sort();
+  return [...sortCommandNames];
 };
 
 module.exports = commands;
