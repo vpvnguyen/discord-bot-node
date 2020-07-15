@@ -1,5 +1,6 @@
-const novelCovidApi = require("../../utils/novelcovid.api");
-const messageLayout = require("../../utils/layout/message.layout");
+const Discord = require("discord.js");
+const novelCovidApi = require("../../utils/api/novelcovid.api");
+const covidLayout = require("../../utils/layout/layout");
 
 const covid = {
   name: "!covid",
@@ -13,8 +14,16 @@ const covid = {
       const parsedMessage = await mapper(msg, args);
       console.log(`---parsedMessage---`);
       console.log(parsedMessage);
-      const formattedMessage = messageLayout(parsedMessage);
-      await msg.channel.send(formattedMessage);
+
+      const embed = new Discord.MessageEmbed()
+        .setColor(covidLayout.theme)
+        .setTitle(covid.name)
+        .setDescription(covid.description)
+        // refactor
+        .addFields({ name: parsedMessage.name, value: parsedMessage.value })
+        .setFooter(covidLayout.footer);
+
+      await msg.channel.send(embed);
     } catch (error) {
       console.error(error.message);
     }
@@ -31,15 +40,19 @@ const mapper = async (msg, args) => {
   console.log(`arg1: ${arg1}`);
   console.log(`arg2: ${arg2}`);
 
+  // if there are no args
   if (args < 1)
-    return [
-      "Try one of the following:",
-      "!covid help",
-      "!covid all",
-      "!covid country [country_name]",
-      "!covid state [state_name]",
-    ];
-  // find martching arg1 in apiMethod to execute appropriate run
+    return {
+      name: "Try one of the following:",
+      value: [
+        "!covid help",
+        "!covid all",
+        "!covid country [country_name]",
+        "!covid state [state_name]",
+      ],
+    };
+
+  // find matching arg1 in apiMethod to execute appropriate run
   Object.keys(apiMethod).map((key) => {
     if (apiMethod[key].name === arg1) return (run = apiMethod[key]);
   });
@@ -47,10 +60,13 @@ const mapper = async (msg, args) => {
   console.log(`run:`, run);
 
   const getDataFromApi = await run.run(arg2);
-  //   run.run(msg);
-  return getDataFromApi;
+  return {
+    name: "Api Data", // refactor to either set embeded message fields here or later
+    value: getDataFromApi,
+  };
 };
 
+// refactor to either set embeded message fields from method or earlier
 const apiMethod = {
   help: {
     name: "help",
