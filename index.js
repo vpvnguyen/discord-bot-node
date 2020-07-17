@@ -5,8 +5,6 @@ const botCommands = require("./commands");
 const bot = new Discord.Client();
 bot.commands = new Discord.Collection();
 
-const TOKEN = process.env.DISCORD_BOT_TOKEN;
-
 Object.keys(botCommands).map((key) => {
   bot.commands.set(botCommands[key].name, botCommands[key]);
 });
@@ -33,7 +31,7 @@ bot.on("message", (msg) => {
   }
 });
 
-bot.login(TOKEN);
+bot.login(process.env.DISCORD_BOT_TOKEN);
 
 const isNotValidCommand = (msg) => {
   const prefix = "!";
