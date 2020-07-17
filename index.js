@@ -12,7 +12,6 @@ Object.keys(botCommands).map((key) => {
 bot.on("ready", () => console.info(`Logged in as ${bot.user.tag}`));
 
 bot.on("message", (msg) => {
-  // validate message
   if (isNotValidCommand(msg)) return;
 
   const { command, args } = defineInput(msg);
@@ -22,12 +21,10 @@ bot.on("message", (msg) => {
   }
 
   try {
-    console.log("Command to execute:");
-    console.log(bot.commands.get(command));
     bot.commands.get(command).execute(msg, args);
   } catch (error) {
-    console.error(error);
-    msg.reply("there was an error trying to execute that command!");
+    console.error("Bot on message error:", error.message);
+    msg.reply("There was an error trying to execute that command!");
   }
 });
 
@@ -40,15 +37,8 @@ const isNotValidCommand = (msg) => {
 };
 
 const defineInput = (msg) => {
-  console.log("defineInput");
-
   const args = msg.content.split(/ +/);
   const command = args.shift().toLowerCase();
-
-  console.log(`msg.content: ${msg.content}`);
-  console.log(`args: ${args}`);
-  console.info(`Called command: ${command}`);
-
   return {
     command,
     args,
@@ -56,13 +46,10 @@ const defineInput = (msg) => {
 };
 
 const commandDoesNotExist = (command) => {
-  console.log("commandsExist");
-  console.log(command);
   if (command === "!kill") {
     exit(msg);
   }
 
-  console.log(bot.commands.has(command));
   if (!bot.commands.has(command)) return true;
 
   return false;
@@ -70,7 +57,9 @@ const commandDoesNotExist = (command) => {
 
 const exit = (msg) => {
   let countDown = 5;
+
   msg.channel.send(`Shutting down in ${countDown}...`);
+
   setInterval(() => {
     countDown--;
     console.log(countDown);
