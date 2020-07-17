@@ -62,7 +62,6 @@ const exit = (msg) => {
 
   setInterval(() => {
     countDown--;
-    console.log(countDown);
     if (countDown === 0) {
       return msg.channel.send("Goodbye.");
     }
