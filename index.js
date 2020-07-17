@@ -32,7 +32,11 @@ bot.login(process.env.DISCORD_BOT_TOKEN);
 
 const isNotValidCommand = (msg) => {
   const prefix = "!";
-  if (!msg.content.startsWith(prefix) || msg.author.username === "sugoi-bot")
+  if (
+    !msg.content.startsWith(prefix) ||
+    msg.author.username === process.env.DISCORD_BOT_NAME ||
+    "sugoi-bot"
+  )
     return true;
 };
 
