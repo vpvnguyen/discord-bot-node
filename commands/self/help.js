@@ -4,10 +4,10 @@ const help = {
   execute(msg, args) {
     msg.reply("Need some help?");
     setTimeout(() => {
-      return msg.channel.send(
-        "Try typing in `!commands` until my owner gives me smarter instructions"
+      return msg.reply(
+        "There's a lot of things I can do... Try typing in `!commands`"
       );
-    }, 1000);
+    }, 500);
   },
 };
 
