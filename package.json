@@ -18,6 +18,7 @@
   },
   "homepage": "https://github.com/vpvnguyen/discord-bot-node#readme",
   "dependencies": {
+    "dayjs": "^1.8.29",
     "discord.js": "^12.2.0",
     "dotenv": "^8.2.0",
     "novelcovid": "^3.0.0"
