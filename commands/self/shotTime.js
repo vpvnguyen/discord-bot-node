@@ -3,9 +3,14 @@ const shotTime = {
   description: "shot time desc",
   execute(msg, args) {
     msg.reply("It's...");
+
     setTimeout(() => {
-      return msg.channel.send("SHOT TIME!");
-    }, 3000);
+      return msg.reply("Wait for it...");
+    }, 800);
+
+    setTimeout(() => {
+      return msg.reply("SHOT TIME!");
+    }, 2000);
   },
 };
 

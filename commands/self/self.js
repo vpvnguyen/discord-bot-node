@@ -3,6 +3,9 @@ const Self = {
   description: `self description`,
   execute(msg, args) {
     msg.reply("selfie?");
+    setTimeout(() => {
+      return msg.reply("Say... cheeese!");
+    }, 500);
   },
 };
 
