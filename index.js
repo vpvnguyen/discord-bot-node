@@ -12,14 +12,18 @@ Object.keys(botCommands).map((key) => {
 bot.on("ready", () => console.info(`Logged in as ${bot.user.tag}`));
 
 bot.on("message", (msg) => {
+  console.log(`isNotValidCommand`);
   if (isNotValidCommand(msg)) return;
 
+  console.log(`defineInput`);
   const { command, args } = defineInput(msg);
 
+  console.log(`commandDoesNotExist`);
   if (commandDoesNotExist(command)) {
     return msg.reply("Huh? You rang? No comprende...");
   }
 
+  console.log(`execute`);
   try {
     bot.commands.get(command).execute(msg, args);
   } catch (error) {
@@ -34,8 +38,7 @@ const isNotValidCommand = (msg) => {
   const prefix = "!";
   if (
     !msg.content.startsWith(prefix) ||
-    msg.author.username === process.env.DISCORD_BOT_NAME ||
-    "sugoi-bot"
+    msg.author.username === (process.env.DISCORD_BOT_NAME || "sugoi-bot")
   )
     return true;
 };
