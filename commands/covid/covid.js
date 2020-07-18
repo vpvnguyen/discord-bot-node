@@ -1,72 +1,59 @@
-const Discord = require("discord.js");
-const novelCovidApi = require("../../utils/api/novelcovid.api");
-const covidLayout = require("../../utils/layout/layout");
+const novelCovidApi = require("novelcovid");
+
+const baseUrl = "https://disease.sh";
+
+novelCovidApi.settings({ baseUrl });
+
+const layout = {
+  theme: `#EC7063`,
+  footer: `disease.sh`,
+};
 
 const covid = {
   name: "!covid",
   description: "covid desc",
   execute: async (msg, args) => {
     try {
-      console.log("---execute---");
+      console.log("\n---execute---");
       console.log(`msg.content: ${msg.content}`);
-      console.log(`args: ${args}`);
+      console.log(`args: ${args}\n`);
 
-      const parsedMessage = await mapper(msg, args);
-      console.log(`---parsedMessage---`);
-      console.log(parsedMessage);
+      // if there are no args
+      if (args < 1) return msg.reply("Try `!covid help`");
 
-      const embed = new Discord.MessageEmbed()
-        .setColor(covidLayout.theme)
-        .setTitle(covid.name)
-        .setDescription(covid.description)
-        // refactor
-        .addFields({ name: parsedMessage.name, value: parsedMessage.value })
-        .setFooter(covidLayout.footer);
+      console.log(`\nargs[0]: ${args[0]}`);
+      console.log(`args[1]: ${args[1]}`);
+      console.log(`args[2]: ${args[2]}\n`);
 
-      await msg.channel.send(embed);
+      // using first args, find the name of the args in the available commands list
+      // return the appropriate command to be ran
+      let command;
+      let commandName = args[0];
+      let param = `${args[1]} ${args[2] ? args[2] : ""}`;
+      Object.keys(apiMethod).map((key) => {
+        if (commandName === apiMethod[key].name)
+          return (command = apiMethod[key]);
+      });
+
+      console.log(`command:`, command);
+
+      const embededMessage = await command.run(param);
+
+      await msg.channel.send(embededMessage);
     } catch (error) {
       console.error(error.message);
     }
   },
 };
 
-const mapper = async (msg, args) => {
-  console.log("---mapper---");
-  console.log(args);
-  let run;
-  const arg1 = args[0];
-  const arg2 = args[1];
+// const embed = new Discord.MessageEmbed()
+//   .setColor(covidLayout.theme)
+//   .setTitle(covid.name)
+//   .setDescription(covid.description)
+//   // refactor
+//   .addFields({ name: parsedMessage.name, value: parsedMessage.value })
+//   .setFooter(covidLayout.footer);
 
-  console.log(`arg1: ${arg1}`);
-  console.log(`arg2: ${arg2}`);
-
-  // if there are no args
-  if (args < 1)
-    return {
-      name: "Try one of the following:",
-      value: [
-        "!covid help",
-        "!covid all",
-        "!covid country [country_name]",
-        "!covid state [state_name]",
-      ],
-    };
-
-  // find matching arg1 in apiMethod to execute appropriate run
-  Object.keys(apiMethod).map((key) => {
-    if (apiMethod[key].name === arg1) return (run = apiMethod[key]);
-  });
-
-  console.log(`run:`, run);
-
-  const getDataFromApi = await run.run(arg2);
-  return {
-    name: "Api Data", // refactor to either set embeded message fields here or later
-    value: getDataFromApi,
-  };
-};
-
-// refactor to either set embeded message fields from method or earlier
 const apiMethod = {
   help: {
     name: "help",
@@ -90,8 +77,18 @@ const apiMethod = {
     name: "state",
     run: async (state) => {
       try {
-        const data = await novelCovidApi.state(state);
-        return data;
+        const response = await novelCovidApi.states({ state });
+        console.log(`Retrieving API data for: ${state}`);
+        console.log(response);
+        if (response.message) return response.message;
+        let parsed = [
+          `${response.state}`,
+          `Total Cases: ${response.cases}`,
+          `Today's Cases: ${response.todayCases}`,
+          `Today's Deaths: ${response.todayDeaths}`,
+          `Total Deaths: ${response.deaths}`,
+        ];
+        return parsed;
       } catch (error) {
         console.error(error.message);
       }
