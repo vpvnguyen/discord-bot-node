@@ -1,29 +1,30 @@
 require("dotenv").config();
-const Discord = require("discord.js");
+const { Client, Collection } = require("discord.js");
 const botCommands = require("./commands");
 
-const bot = new Discord.Client();
-bot.commands = new Discord.Collection();
+const bot = new Client();
+bot.commands = new Collection();
 
 Object.keys(botCommands).map((key) => {
   bot.commands.set(botCommands[key].name, botCommands[key]);
 });
 
-bot.on("ready", () => console.info(`Logged in as ${bot.user.tag}`));
+bot.on("ready", () => {
+  bot.user.setActivity({ name: "!commands", type: "LISTENING" });
+  console.info(`Logged in as ${bot.user.tag}`);
+});
 
 bot.on("message", (msg) => {
-  console.log(`isNotValidCommand`);
   if (isNotValidCommand(msg)) return;
 
-  console.log(`defineInput`);
   const { command, args } = defineInput(msg);
 
-  console.log(`commandDoesNotExist`);
   if (commandDoesNotExist(command)) {
-    return msg.reply("Huh? You rang? No comprende...");
+    return msg.reply(
+      "Huh? You rang? No comprende...\nType `!commands` to see what I can do."
+    );
   }
 
-  console.log(`execute`);
   try {
     bot.commands.get(command).execute(msg, args);
   } catch (error) {
