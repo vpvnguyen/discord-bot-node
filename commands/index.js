@@ -9,6 +9,7 @@ const commands = {
   whoAmI: require("./self/whoAmI"),
   shotTime: require("./self/shotTime"),
   stupidBot: require("./self/stupidBot"),
+  invite: require("../commands/self/invite"),
   // covid
   covid: require("./covid/covid"),
   // commands
