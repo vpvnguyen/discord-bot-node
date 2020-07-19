@@ -2,21 +2,11 @@ const { MessageEmbed } = require("discord.js");
 const dayjs = require("dayjs");
 const novelCovidApi = require("novelcovid");
 const getListOfCommands = require("../../utils/getListOfCommands");
+const constant = require("../../utils/constant");
 
 const baseUrl = "https://disease.sh";
 
 novelCovidApi.settings({ baseUrl });
-
-const layout = {
-  author: "github.com/vpvnguyen",
-  theme: `#EC7063`,
-  footer: () => `${baseUrl.split("//")[1]} • ${layout.author}`,
-  newLine: {
-    name: "\u200B",
-    value: "\u200B",
-    inline: true,
-  },
-};
 
 const apiCommand = {
   help: {
@@ -29,7 +19,7 @@ const apiCommand = {
       console.log(listOfCommands);
 
       const embededMessage = new MessageEmbed()
-        .setColor(layout.theme)
+        .setColor(constant.theme.covid)
         .setDescription(`Here is what I can do:`)
         .addFields(
           {
@@ -41,7 +31,7 @@ const apiCommand = {
             value: "Example: `!covid state california`",
           }
         )
-        .setFooter(layout.author);
+        .setFooter(constant.author);
 
       return embededMessage;
     },
@@ -50,17 +40,98 @@ const apiCommand = {
     name: "all",
     args: "all",
     description: "All Covid data",
-    run: async () => "No one is safe in all dis... what else you need to know?",
+    run: async () => {
+      try {
+        const response = await novelCovidApi.all();
+        console.log(response);
+
+        if (response.message) return response.message;
+
+        const embededMessage = new MessageEmbed()
+          .setColor(constant.theme.covid)
+          .setDescription(`Here are the results Worldwide:`)
+          .addFields(
+            {
+              name: "Cases",
+              value: `Today: ${response.todayCases}\nTotal: ${response.cases}`,
+              inline: true,
+            },
+            {
+              name: "Deaths",
+              value: `Today: ${response.todayDeaths}\nTotal: ${response.deaths}`,
+              inline: true,
+            },
+            {
+              name: "Recovered",
+              value: `Today: ${response.todayRecovered}\nTotal: ${response.recovered}`,
+              inline: true,
+            },
+            {
+              name: "Analytics",
+              value: `Active: ${response.active}\nTested: ${response.tests}\nCritical: ${response.critical}\nPopulation: ${response.population}\nAffected Countries: ${response.affectedCountries}`,
+              inline: true,
+            }
+          )
+          .setFooter(
+            `Last updated ${dayjs(response.updated).format(
+              "MM-DD-YYYY"
+            )} from ${baseUrl.split("//")[1]} • ${constant.author}`
+          );
+
+        return embededMessage;
+      } catch (error) {
+        console.error(error.message);
+      }
+    },
   },
   country: {
     name: "country",
     args: "country [country_name]",
     description: "Covid data by country",
-    run: async () => [
-      "Haha... thats too much data for me to handle. Try: ",
-      "`!covid state [state_name]`",
-      "Example: `!covid state california`",
-    ],
+    run: async (country) => {
+      try {
+        const response = await novelCovidApi.countries({ country });
+        console.log(response);
+
+        if (response.message) return response.message;
+
+        const embededMessage = new MessageEmbed()
+          .setColor(constant.theme.covid)
+          .setDescription(`Here are the results for ${response.country}:`)
+          .setThumbnail(response.countryInfo.flag)
+          .addFields(
+            {
+              name: "Cases",
+              value: `Today: ${response.todayCases}\nTotal: ${response.cases}`,
+              inline: true,
+            },
+            {
+              name: "Deaths",
+              value: `Today: ${response.todayDeaths}\nTotal: ${response.deaths}`,
+              inline: true,
+            },
+            {
+              name: "Recovered",
+              value: `Today: ${response.todayRecovered}\nTotal: ${response.recovered}`,
+              inline: true,
+            },
+            {
+              name: "Analytics",
+              value: `Active: ${response.active}\nTested: ${response.tests}\nCritical: ${response.critical}\nPopulation: ${response.population}`,
+              inline: true,
+            }
+          )
+          .setFooter(
+            `Last updated ${dayjs(response.updated).format(
+              "MM-DD-YYYY"
+            )} from ${baseUrl.split("//")[1]} • ${constant.author}`
+          );
+
+        return embededMessage;
+      } catch (error) {
+        console.error(error.message);
+      }
+    },
   },
   state: {
     name: "state",
@@ -75,7 +146,7 @@ const apiCommand = {
         if (response.message) return response.message;
 
         const embededMessage = new MessageEmbed()
-          .setColor(layout.theme)
+          .setColor(constant.theme.covid)
           .setDescription(`Here are the results for ${response.state}:`)
           .addFields(
             {
@@ -88,7 +159,7 @@ const apiCommand = {
               value: `Today: ${response.todayDeaths}\nTotal: ${response.deaths}`,
               inline: true,
             },
-            layout.newLine,
+            constant.inlineSpace,
             {
               name: "Analytics",
               value: `Active: ${response.active}\nTested: ${response.tests}`,
@@ -97,7 +168,53 @@ const apiCommand = {
           .setFooter(
             `Last updated ${dayjs(response.updated).format(
               "MM-DD-YYYY"
-            )} from ${layout.footer()}`
+            )} from ${baseUrl.split("//")[1]} • ${constant.author}`
+          );
+
+        return embededMessage;
+      } catch (error) {
+        console.error(error.message);
+      }
+    },
+  },
+  county: {
+    name: "county",
+    args: "county [county_name]",
+    description: "Covid data by county",
+    run: async (county) => {
+      try {
+        const response = await novelCovidApi.jhucsse.counties({ county });
+        console.log(`\nRetrieving API data for: ${county}`);
+        console.log(response);
+
+        if (response.message) return response.message;
+
+        response.map((keys) => {
+          console.log(`province: ${keys.province}`);
+          console.log(`county: ${keys.county}`);
+        });
+        const embededMessage = new MessageEmbed()
+          .setColor(constant.theme.covid)
+          .setDescription(`Here are the totals for \`${county}\`:`)
+          .addFields(
+            response.map((data) => {
+              if (data.country === "US")
+                return {
+                  name: `${data.province} | ${data.county}`,
+                  value: `Total Cases: ${data.stats.confirmed}\nDeaths: ${
+                    data.stats.deaths
+                  }\n${
+                    data.stats.recovered === 0
+                      ? ""
+                      : `Recovered: ${data.stats.recovered}`
+                  }`,
+                };
+            })
+          )
+          .setFooter(
+            `Updated: ${dayjs(response[0].updatedAt).format("MM-DD-YYYY")} • ${
+              baseUrl.split("//")[1]
+            } • ${constant.author}`
           );
 
         return embededMessage;
