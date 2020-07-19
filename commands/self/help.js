@@ -1,6 +1,6 @@
 const help = {
   name: "!help",
-  description: "help desc",
+  description: "Don't know where to start? Use this command!",
   execute(msg, args) {
     msg.reply("Need some help?");
     setTimeout(() => {

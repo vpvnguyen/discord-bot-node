@@ -1,6 +1,6 @@
 const stupidBot = {
   name: "!stupidbot",
-  description: "stupidbot desc",
+  description: "Do you even like yourself?",
   execute(msg, args) {
     msg.reply("You want a piece of me?");
     setTimeout(() => {

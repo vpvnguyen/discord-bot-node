@@ -1,6 +1,6 @@
 const Self = {
   name: "!self",
-  description: `self description`,
+  description: "Self-made? self-desctruct?",
   execute(msg, args) {
     msg.reply("selfie?");
     setTimeout(() => {

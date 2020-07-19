@@ -1,6 +1,6 @@
 const shotTime = {
   name: "!whattimeisit",
-  description: "shot time desc",
+  description: "For any timezone, always accurate",
   execute(msg, args) {
     msg.reply("It's...");
 
