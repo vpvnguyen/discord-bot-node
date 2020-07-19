@@ -1,8 +1,10 @@
 const { MessageEmbed } = require("discord.js");
 const dayjs = require("dayjs");
-const novelCovidApi = require("novelcovid");
-const getListOfCommands = require("../../utils/getListOfCommands");
 const constant = require("../../utils/constant");
+const getListOfCommands = require("../../utils/getListOfCommands");
+const formatNumber = require("../../utils/formatNumber");
+
+const novelCovidApi = require("novelcovid");
 
 const baseUrl = "https://disease.sh";
 
@@ -31,7 +33,9 @@ const apiCommand = {
             value: "Example: `!covid state california`",
           }
         )
-        .setFooter(constant.author);
+        .setFooter(
+          `Data sourced from Johns Hopkins University, the New York Times, Worldometers, and Apple reports to give you a comprehensive view of the data.\n\n${constant.author}`
+        );
 
       return embededMessage;
     },
@@ -53,28 +57,44 @@ const apiCommand = {
           .addFields(
             {
               name: "Cases",
-              value: `Today: ${response.todayCases}\nTotal: ${response.cases}`,
+              value: `Today: ${formatNumber(
+                response.todayCases
+              )}\nTotal: ${formatNumber(response.cases)}`,
               inline: true,
             },
             {
               name: "Deaths",
-              value: `Today: ${response.todayDeaths}\nTotal: ${response.deaths}`,
+              value: `Today: ${formatNumber(
+                response.todayDeaths
+              )}\nTotal: ${formatNumber(response.deaths)}`,
               inline: true,
             },
             {
               name: "Recovered",
-              value: `Today: ${response.todayRecovered}\nTotal: ${response.recovered}`,
+              value: `Today: ${formatNumber(
+                response.todayRecovered
+              )}\nTotal: ${formatNumber(response.recovered)}`,
               inline: true,
             },
             {
               name: "Analytics",
-              value: `Active: ${response.active}\nTested: ${response.tests}\nCritical: ${response.critical}\nPopulation: ${response.population}\nAffected Countries: ${response.affectedCountries}`,
+              value: `Active: ${formatNumber(
+                response.active
+              )}\nTested: ${formatNumber(
+                response.tests
+              )}\nCritical: ${formatNumber(
+                response.critical
+              )}\nPopulation: ${formatNumber(
+                response.population
+              )}\nAffected Countries: ${formatNumber(
+                response.affectedCountries
+              )}`,
               inline: true,
             }
           )
           .setFooter(
             `Last updated ${dayjs(response.updated).format(
-              "MM-DD-YYYY"
+              "MM-DD-YYYY HH:mm"
             )} from ${baseUrl.split("//")[1]} • ${constant.author}`
           );
 
@@ -102,28 +122,40 @@ const apiCommand = {
           .addFields(
             {
               name: "Cases",
-              value: `Today: ${response.todayCases}\nTotal: ${response.cases}`,
+              value: `Today: ${formatNumber(
+                response.todayCases
+              )}\nTotal: ${formatNumber(response.cases)}`,
               inline: true,
             },
             {
               name: "Deaths",
-              value: `Today: ${response.todayDeaths}\nTotal: ${response.deaths}`,
+              value: `Today: ${formatNumber(
+                response.todayDeaths
+              )}\nTotal: ${formatNumber(response.deaths)}`,
               inline: true,
             },
             {
               name: "Recovered",
-              value: `Today: ${response.todayRecovered}\nTotal: ${response.recovered}`,
+              value: `Today: ${formatNumber(
+                response.todayRecovered
+              )}\nTotal: ${formatNumber(response.recovered)}`,
               inline: true,
             },
             {
               name: "Analytics",
-              value: `Active: ${response.active}\nTested: ${response.tests}\nCritical: ${response.critical}\nPopulation: ${response.population}`,
+              value: `Active: ${formatNumber(
+                response.active
+              )}\nTested: ${formatNumber(
+                response.tests
+              )}\nCritical: ${formatNumber(
+                response.critical
+              )}\nPopulation: ${formatNumber(response.population)}`,
               inline: true,
             }
           )
           .setFooter(
             `Last updated ${dayjs(response.updated).format(
-              "MM-DD-YYYY"
+              "MM-DD-YYYY HH:mm"
             )} from ${baseUrl.split("//")[1]} • ${constant.author}`
           );
 
@@ -151,23 +183,29 @@ const apiCommand = {
           .addFields(
             {
               name: "Cases",
-              value: `Today: ${response.todayCases}\nTotal: ${response.cases}`,
+              value: `Today: ${formatNumber(
+                response.todayCases
+              )}\nTotal: ${formatNumber(response.cases)}`,
               inline: true,
             },
             {
               name: "Deaths",
-              value: `Today: ${response.todayDeaths}\nTotal: ${response.deaths}`,
+              value: `Today: ${formatNumber(
+                response.todayDeaths
+              )}\nTotal: ${formatNumber(response.deaths)}`,
               inline: true,
             },
             constant.inlineSpace,
             {
               name: "Analytics",
-              value: `Active: ${response.active}\nTested: ${response.tests}`,
+              value: `Active: ${formatNumber(
+                response.active
+              )}\nTested: ${formatNumber(response.tests)}`,
             }
           )
           .setFooter(
             `Last updated ${dayjs(response.updated).format(
-              "MM-DD-YYYY"
+              "MM-DD-YYYY HH:mm"
             )} from ${baseUrl.split("//")[1]} • ${constant.author}`
           );
 
@@ -189,10 +227,6 @@ const apiCommand = {
 
         if (response.message) return response.message;
 
-        response.map((keys) => {
-          console.log(`province: ${keys.province}`);
-          console.log(`county: ${keys.county}`);
-        });
         const embededMessage = new MessageEmbed()
           .setColor(constant.theme.covid)
           .setDescription(`Here are the totals for \`${county}\`:`)
@@ -201,20 +235,20 @@ const apiCommand = {
               if (data.country === "US")
                 return {
                   name: `${data.province} | ${data.county}`,
-                  value: `Total Cases: ${data.stats.confirmed}\nDeaths: ${
-                    data.stats.deaths
-                  }\n${
+                  value: `Total Cases: ${formatNumber(
+                    data.stats.confirmed
+                  )}\nDeaths: ${formatNumber(data.stats.deaths)}\n${
                     data.stats.recovered === 0
                       ? ""
-                      : `Recovered: ${data.stats.recovered}`
+                      : `Recovered: ${formatNumber(data.stats.recovered)}`
                   }`,
                 };
             })
           )
           .setFooter(
-            `Updated: ${dayjs(response[0].updatedAt).format("MM-DD-YYYY")} • ${
-              baseUrl.split("//")[1]
-            } • ${constant.author}`
+            `Updated: ${dayjs(response[0].updatedAt).format(
+              "MM-DD-YYYY HH:mm"
+            )} • ${baseUrl.split("//")[1]} • ${constant.author}`
           );
 
         return embededMessage;
