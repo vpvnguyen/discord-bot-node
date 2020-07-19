@@ -23,7 +23,9 @@ const commands = {
         .setDescription(`Here is what I can do:`)
         .addFields({
           name: "\u200B",
-          value: listOfCommands.map((command) => `${command.name}`),
+          value: listOfCommands.map(
+            (command) => `\`${command.name}\`\n • ${command.description}\n`
+          ),
         })
         .addFields({
           name: "\u200B",
