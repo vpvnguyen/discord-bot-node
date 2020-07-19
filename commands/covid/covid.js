@@ -14,7 +14,7 @@ const apiCommand = {
   help: {
     name: "help",
     args: "help",
-    description: "List of !covid commands",
+    description: "List of `!covid` commands",
     run: () => {
       const listOfCommands = getListOfCommands(apiCommand);
 
@@ -26,7 +26,10 @@ const apiCommand = {
         .addFields(
           {
             name: "\u200B",
-            value: listOfCommands.map((command) => `!covid ${command.args}`),
+            value: listOfCommands.map(
+              (command) =>
+                `\`!covid ${command.args}\`\n • ${command.description}\n`
+            ),
           },
           {
             name: "\u200B",
@@ -268,7 +271,7 @@ const covid = {
       console.log(`msg.content: ${msg.content}\n`);
 
       // if there are no args
-      if (args < 1) return msg.reply("Try `!covid help`");
+      if (args < 1) return msg.channel.send(apiCommand.help.run());
 
       // define args
       let command;
