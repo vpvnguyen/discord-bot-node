@@ -3,6 +3,7 @@ const getListOfCommands = (parentObject) => {
   const commandList = commandKeys.map((keys) => {
     return {
       name: parentObject[keys].name,
+      key: parentObject[keys],
       description: parentObject[keys].description
         ? parentObject[keys].description
         : "",
