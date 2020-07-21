@@ -5,25 +5,23 @@ const botCommands = require("./commands");
 const bot = new Client();
 bot.commands = new Collection();
 
-Object.keys(botCommands).map((key) => {
-  bot.commands.set(botCommands[key].name, botCommands[key]);
-});
-
 bot.on("ready", () => {
+  Object.keys(botCommands).map((key) =>
+    bot.commands.set(botCommands[key].name, botCommands[key])
+  );
   bot.user.setActivity({ name: "!commands", type: "LISTENING" });
   console.info(`Logged in as ${bot.user.tag}`);
 });
 
 bot.on("message", (msg) => {
-  if (isNotValidCommand(msg)) return;
+  if (messageNotValidCommand(msg)) return;
 
   const { command, args } = defineInput(msg);
 
-  if (commandDoesNotExist(command)) {
+  if (commandDoesNotExist(command))
     return msg.reply(
       "Huh? You rang? No comprende...\nType `!commands` to see what I can do."
     );
-  }
 
   try {
     bot.commands.get(command).execute(msg, args);
@@ -35,7 +33,7 @@ bot.on("message", (msg) => {
 
 bot.login(process.env.DISCORD_BOT_TOKEN);
 
-const isNotValidCommand = (msg) => {
+const messageNotValidCommand = (msg) => {
   const prefix = "!";
   if (
     !msg.content.startsWith(prefix) ||
@@ -54,12 +52,8 @@ const defineInput = (msg) => {
 };
 
 const commandDoesNotExist = (command) => {
-  if (command === "!kill") {
-    exit(msg);
-  }
-
+  if (command === "!kill") return exit(msg);
   if (!bot.commands.has(command)) return true;
-
   return false;
 };
 
@@ -70,9 +64,7 @@ const exit = (msg) => {
 
   setInterval(() => {
     countDown--;
-    if (countDown === 0) {
-      return msg.channel.send("Goodbye.");
-    }
+    if (countDown === 0) return msg.channel.send("Goodbye.");
     return msg.channel.send(`${countDown}...`);
   }, 1000);
 
