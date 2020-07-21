@@ -116,7 +116,8 @@ const apiCommand = {
         const response = await novelCovidApi.countries({ country });
         console.log(response);
 
-        if (response.message) return response.message;
+        if (response.message)
+          return `${response.message}... Try for example \`!covid country usa\``;
 
         const embededMessage = new MessageEmbed()
           .setColor(constant.theme.covid)
@@ -178,7 +179,8 @@ const apiCommand = {
         console.log(`\nRetrieving API data for: ${state}`);
         console.log(response);
 
-        if (response.message) return response.message;
+        if (response.message)
+          return `${response.message}... Try for example \`!covid state california\``;
 
         const embededMessage = new MessageEmbed()
           .setColor(constant.theme.covid)
@@ -228,7 +230,8 @@ const apiCommand = {
         console.log(`\nRetrieving API data for: ${county}`);
         console.log(response);
 
-        if (response.message) return response.message;
+        if (response.message)
+          return `${response.message}... Try for example \`!covid county orange\``;
 
         const embededMessage = new MessageEmbed()
           .setColor(constant.theme.covid)
