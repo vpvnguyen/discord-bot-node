@@ -1,9 +1,11 @@
 require("dotenv").config();
-const { Client, Collection } = require("discord.js");
+const { Client, Collection, MessageEmbed } = require("discord.js");
 const botCommands = require("./commands");
+const dayjs = require("dayjs");
 
 const bot = new Client();
 bot.commands = new Collection();
+let links = [];
 
 bot.on("ready", () => {
   Object.keys(botCommands).map((key) =>
@@ -13,11 +15,13 @@ bot.on("ready", () => {
   console.info(`Logged in as ${bot.user.tag}`);
 });
 
-bot.on("message", (msg) => {
+bot.on("message", async (msg) => {
+  console.log(msg);
+  saveLinks(msg);
   if (doesNotContainCommand(msg)) return;
 
   const { command, args } = defineInput(msg);
-
+  if (command === "!accesslinks") return await accessLinks(msg);
   if (command === "!kill") return exit(msg);
 
   if (commandDoesNotExist(command))
@@ -39,6 +43,7 @@ const doesNotContainCommand = (msg) => {
   const prefix = "!";
   if (
     !msg.content.startsWith(prefix) ||
+    msg.author.bot ||
     msg.author.username === (process.env.DISCORD_BOT_NAME || "sugoi-bot")
   )
     return true;
@@ -59,7 +64,7 @@ const commandDoesNotExist = (command) => {
 };
 
 const exit = (msg) => {
-  if (msg.author.username !== process.env.ADMIN)
+  if (msg.author.bot || msg.author.username !== process.env.ADMIN)
     return msg.reply("I don't think so");
 
   let countDown = 5;
@@ -74,4 +79,65 @@ const exit = (msg) => {
     }
     return msg.channel.send(`${countDown}...`);
   }, 1000);
+};
+
+// const saveLinks = (msg) => {
+//   console.log(msg.channel.guild.name);
+//   const guildName = msg.channel.guild.name;
+//   if (
+//     msg.content.includes("http" || "https") &&
+//     msg.author.username !== process.env.DISCORD_BOT_NAME
+//   ) {
+//     function Message(guildName, author, content, date) {
+//       this.guild = guildName;
+//       this.author = author;
+//       this.content = content;
+//       this.date = new Date();
+//     }
+
+//     const newObj = new Message(guildName, msg.author.username, msg.content);
+//     links.guildName = newObj;
+//     console.log(newObj);
+//     console.log(links.guildName);
+//     console.log(links);
+//   }
+// };
+
+const saveLinks = (msg) => {
+  if (
+    msg.content.includes("http" || "https") &&
+    !msg.author.bot &&
+    msg.author.username !== process.env.DISCORD_BOT_NAME
+  ) {
+    links.push({
+      author: msg.author.username,
+      content: msg.content,
+      date: new Date(),
+    });
+  }
+};
+
+const accessLinks = async (msg) => {
+  console.log(links);
+  if (links.length === 0) return msg.reply("There are no links");
+  const embededMessage = new MessageEmbed()
+    .setColor("#32a8a8")
+    .setDescription(
+      `There are [${links.length}] link(s) recorded since ${dayjs(
+        links[0].date
+      ).format("MM-DD-YYYY hh:mma")}:`
+    )
+    .addFields(
+      links.map((value) => {
+        return {
+          name: `${value.author} | ${dayjs(value.date).format(
+            "MM-DD-YYYY hh:mma"
+          )}`,
+          value: `${value.content}`,
+        };
+      })
+    )
+    .setFooter("github.com/vpvnguyen");
+
+  await msg.channel.send(embededMessage);
 };
