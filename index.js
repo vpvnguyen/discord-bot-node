@@ -14,9 +14,11 @@ bot.on("ready", () => {
 });
 
 bot.on("message", (msg) => {
-  if (messageNotValidCommand(msg)) return;
+  if (doesNotContainCommand(msg)) return;
 
   const { command, args } = defineInput(msg);
+
+  if (command === "!kill") return exit(msg);
 
   if (commandDoesNotExist(command))
     return msg.reply(
@@ -33,7 +35,7 @@ bot.on("message", (msg) => {
 
 bot.login(process.env.DISCORD_BOT_TOKEN);
 
-const messageNotValidCommand = (msg) => {
+const doesNotContainCommand = (msg) => {
   const prefix = "!";
   if (
     !msg.content.startsWith(prefix) ||
@@ -52,23 +54,24 @@ const defineInput = (msg) => {
 };
 
 const commandDoesNotExist = (command) => {
-  if (command === "!kill") return exit(msg);
   if (!bot.commands.has(command)) return true;
   return false;
 };
 
 const exit = (msg) => {
+  if (msg.author.username !== process.env.ADMIN)
+    return msg.reply("I don't think so");
+
   let countDown = 5;
 
   msg.channel.send(`Shutting down in ${countDown}...`);
 
-  setInterval(() => {
+  setInterval(async () => {
     countDown--;
-    if (countDown === 0) return msg.channel.send("Goodbye.");
+    if (countDown === 0) {
+      await msg.channel.send("Goodbye.");
+      return process.exit(22);
+    }
     return msg.channel.send(`${countDown}...`);
   }, 1000);
-
-  setTimeout(() => {
-    return process.exit(22);
-  }, 6000);
 };
