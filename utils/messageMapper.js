@@ -23,8 +23,41 @@ const botCommands = require("./commands");
 //   }
 // };
 
-const messageMapper = () => {
-  console.log("messageMapper");
+const messageMapper = (msg) => {
+  // listen and filter messages
+  // if prefix => define command/args => check if command => decide who has permission for command => execute command
+  // if some field exist, record message
+
+  if (hasCommandPrefix(msg)) console.log("messageMapper");
+};
+
+const hasCommandPrefix = (msg) => {
+  const prefix = "!";
+  if (msg.content.startsWith(prefix)) return true;
+  return false;
+};
+
+const isCommand = (msg) => {
+  // define command and args
+  const args = msg.content.split(/ +/);
+  const command = args.shift().toLowerCase();
+
+  // check if command exists
+  if (!bot.commands.has(command)) return;
+
+  try {
+    // define and create roles
+    // split by permission
+    bot.commands.get(command).execute(msg, args);
+  } catch (error) {
+    console.error("Bot on message error:", error.message);
+    msg.reply("There was an error trying to execute that command!");
+  }
+};
+
+const commandDoesNotExist = (command) => {
+  if (!bot.commands.has(command)) return true;
+  return false;
 };
 
 const saveLinks = (msg) => {
