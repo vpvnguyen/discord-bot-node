@@ -2,6 +2,7 @@ const constant = {
   theme: {
     default: "#6897bb",
     covid: "#EC7063",
+    admin: "#c90579",
   },
   author: "github.com/vpvnguyen",
   inlineSpace: {
