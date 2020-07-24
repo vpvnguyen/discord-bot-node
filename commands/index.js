@@ -4,12 +4,12 @@ const constant = require("../utils/constant");
 
 const commands = {
   // self
-  self: require("./self/self"),
+  info: require("./self/info"),
   help: require("./self/help"),
   whoAmI: require("./self/whoAmI"),
   shotTime: require("./self/shotTime"),
   stupidBot: require("./self/stupidBot"),
-  invite: require(".self/invite"),
+  invite: require("./self/invite"),
   // covid
   covid: require("./covid/covid"),
   // admin
