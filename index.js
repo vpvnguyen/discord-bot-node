@@ -81,28 +81,6 @@ const exit = (msg) => {
   }, 1000);
 };
 
-// const saveLinks = (msg) => {
-//   console.log(msg.channel.guild.name);
-//   const guildName = msg.channel.guild.name;
-//   if (
-//     msg.content.includes("http" || "https") &&
-//     msg.author.username !== process.env.DISCORD_BOT_NAME
-//   ) {
-//     function Message(guildName, author, content, date) {
-//       this.guild = guildName;
-//       this.author = author;
-//       this.content = content;
-//       this.date = new Date();
-//     }
-
-//     const newObj = new Message(guildName, msg.author.username, msg.content);
-//     links.guildName = newObj;
-//     console.log(newObj);
-//     console.log(links.guildName);
-//     console.log(links);
-//   }
-// };
-
 const saveLinks = (msg) => {
   if (
     msg.content.includes("http" || "https") &&
