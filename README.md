@@ -26,6 +26,19 @@ Discord bot built on Node.js
 - Copy generated URL or use this example to create URL: `https://discord.com/api/oauth2/authorize?client_id=DISCORD_BOT_CLIENT_ID&permissions=DISCORD_BOT_PERMISSIONS&scope=bot`
 - Paste the URL into the browser. This should prompt to add the bot to a server
 
+## Install Postgres on Raspian | Raspberry Pi OS
+
+- `ssh` into raspberry pi: `ssh pi@IP_ADDRESS`
+- Gain root access: `sudo -i`
+- Install psql: `sudo apt install postgresql postgresql-contrib`
+  > Issues: Postgres ‘buster-pgdg’ doesn’t support ARM architecture
+  > Install older version of psql `sudo apt install postgresql-9.6`
+
+## Setup Postgres database
+
+- In the project's repo, navigate to `./server/config/db.seed.sql`
+- Run the seed script to populate the DB structure
+
 ## Project Setup
 
 - Base project: `git clone https://github.com/sitepoint-editors/discord-bot-sitepoint`
