@@ -59,9 +59,14 @@ DB_PASSWORD=database password
 
 ### Technologies
 
-- Node
-- dotenv
+- node
 - discord.js
+- dotenv
+- express
+- postgres
+- axios
+- dayjs
+- novelcovid
 
 ## License
 
