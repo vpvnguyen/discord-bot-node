@@ -26,7 +26,7 @@ Discord bot built on Node.js
 - Copy generated URL or use this example to create URL: `https://discord.com/api/oauth2/authorize?client_id=DISCORD_BOT_CLIENT_ID&permissions=DISCORD_BOT_PERMISSIONS&scope=bot`
 - Paste the URL into the browser. This should prompt to add the bot to a server
 
-## Install Postgres on Raspian | Raspberry Pi OS
+## Install Postgres on Raspbian | Raspberry Pi OS
 
 - `ssh` into raspberry pi: `ssh pi@IP_ADDRESS`
 - Gain root access: `sudo -i`
@@ -38,6 +38,20 @@ Discord bot built on Node.js
 
 - In the project's repo, navigate to `./server/config/db.seed.sql`
 - Run the seed script to populate the DB structure
+
+## Setup .env
+
+- Create a `.env` in the root of the repo
+- Setup the `.env` file for the project to access restricted information
+
+```
+DISCORD_BOT_NAME=your bot name
+DISCORD_BOT_TOKEN=discord bot's token
+ADMIN=discord username to be admin of this bot
+PORT=api server's port
+DB_NAME=database name
+DB_PASSWORD=database password
+```
 
 ## Project Setup
 
