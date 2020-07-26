@@ -1,4 +1,4 @@
-# Discord Bot built on Node.js | Raspberry Pi
+# Discord Bot - Node.js | Raspberry Pi
 
 Discord bot built on Node.js running on Raspberry Pi OS
 
