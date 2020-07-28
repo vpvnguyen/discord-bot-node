@@ -23,7 +23,9 @@ router.get("/user/:id/messages", async (req, res) => {
     res.status(200).json(messages.rows);
   } catch (error) {
     console.error(error.message);
-    res.status(500).json({ message: "Issue retrieving user messages" });
+    res
+      .status(500)
+      .json({ message: "Issue retrieving messages from a user's ID" });
   }
 });
 
@@ -36,7 +38,7 @@ router.get("/curses", async (req, res) => {
     res.status(200).json(messages.rows);
   } catch (error) {
     console.error(error.message);
-    res.status(500).json({ message: "Issue retrieving user messages" });
+    res.status(500).json({ message: "Issue retrieving curses" });
   }
 });
 
@@ -51,7 +53,9 @@ router.get("/user/:id/curses", async (req, res) => {
     res.status(200).json(messages.rows);
   } catch (error) {
     console.error(error.message);
-    res.status(500).json({ message: "Issue retrieving user messages" });
+    res
+      .status(500)
+      .json({ message: "Issue retrieving curses from a user's ID" });
   }
 });
 
@@ -64,7 +68,7 @@ router.get("/links", async (req, res) => {
     res.status(200).json(messages.rows);
   } catch (error) {
     console.error(error.message);
-    res.status(500).json({ message: "Issue retrieving user messages" });
+    res.status(500).json({ message: "Issue retrieving links" });
   }
 });
 
