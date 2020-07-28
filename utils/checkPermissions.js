@@ -5,8 +5,7 @@ const checkPermissions = async (msg) => {
   const getUserRole = await axios.get(
     `http://localhost:5000/api/user/${username}/${discriminator}`
   );
-  const userRole = getUserRole.data[0].role;
-  console.log(userRole);
+  return getUserRole.data[0].role;
 };
 
 module.exports = checkPermissions;
