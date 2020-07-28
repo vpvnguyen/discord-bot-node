@@ -1,7 +1,7 @@
 const axios = require("axios");
 
-const checkPermissions = async (msg) => {
-  const [username, discriminator] = msg.split("#");
+const checkPermissions = async (discordUsername) => {
+  const [username, discriminator] = discordUsername.split("#");
   const getUserRole = await axios.get(
     `http://localhost:5000/api/user/${username}/${discriminator}`
   );
