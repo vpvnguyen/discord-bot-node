@@ -5,7 +5,6 @@ const pool = require("../config/db.config");
 router.get("/messages", async (req, res) => {
   try {
     const messages = await pool.query("SELECT * FROM messages");
-    console.log(messages.rows);
     res.status(200).json(messages.rows);
   } catch (error) {
     console.error(error.message);
@@ -34,7 +33,6 @@ router.get("/curses", async (req, res) => {
     const messages = await pool.query(
       "SELECT * FROM messages WHERE amount_curse > 0"
     );
-    console.log(messages.rows);
     res.status(200).json(messages.rows);
   } catch (error) {
     console.error(error.message);
@@ -49,7 +47,6 @@ router.get("/user/:id/curses", async (req, res) => {
       "SELECT * FROM messages WHERE user_id = $1 AND amount_curse > 0",
       [id]
     );
-    console.log(messages.rows);
     res.status(200).json(messages.rows);
   } catch (error) {
     console.error(error.message);
@@ -64,7 +61,6 @@ router.get("/links", async (req, res) => {
     const messages = await pool.query(
       "SELECT * FROM messages WHERE has_link = true"
     );
-    console.log(messages.rows);
     res.status(200).json(messages.rows);
   } catch (error) {
     console.error(error.message);

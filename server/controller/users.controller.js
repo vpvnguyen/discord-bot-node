@@ -36,7 +36,7 @@ router.get("/user/:username/:discriminator", async (req, res) => {
     res.status(200).json(user.rows);
   } catch (error) {
     console.error(error.message);
-    res.status(500).json({ message: "Issue retrieving by user's tag" });
+    res.status(500).json({ message: "Issue retrieving a user by user's tag" });
   }
 });
 
