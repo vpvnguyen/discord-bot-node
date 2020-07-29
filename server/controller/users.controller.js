@@ -28,10 +28,9 @@ router.get("/user/:id", async (req, res) => {
 router.get("/user/:username/:discriminator", async (req, res) => {
   try {
     const { username, discriminator } = req.params;
-    const tag = `#${discriminator}`;
     const user = await pool.query(
       "SELECT * FROM users WHERE username = $1 AND discriminator = $2",
-      [username, tag]
+      [username, discriminator]
     );
     res.status(200).json(user.rows);
   } catch (error) {
