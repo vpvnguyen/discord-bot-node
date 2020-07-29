@@ -16,7 +16,7 @@ bot.on("ready", () => {
 });
 
 bot.on("message", async (msg) => {
-  console.log(msg);
+  // console.log(msg);
   saveLinks(msg);
   if (doesNotContainCommand(msg)) return;
 
