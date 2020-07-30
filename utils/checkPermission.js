@@ -10,12 +10,13 @@ const checkPermission = async (username, discriminator) => {
   // if user is cached, return user
   if (cachedUser.length > 0) return cachedUser[0];
 
-  // if user is not cached, check DB for user's role
   try {
+    // if user is not cached, check DB for user's role
     const userRole = await checkRole(username, discriminator);
 
     // if user exists in DB, cache user
     cachedUsers.push({ name: user, role: userRole });
+
     return { name: user, role: userRole };
   } catch (error) {
     // if user does not exist in DB, reject
