@@ -25,6 +25,17 @@ router.get("/user/:id", async (req, res) => {
   }
 });
 
+router.delete("/user/:id", async (req, res) => {
+  try {
+    const { id } = req.params;
+    const user = await pool.query("DELETE FROM users WHERE user_id = $1", [id]);
+    res.status(200).json({ message: `User ${id} has been deleted` });
+  } catch (error) {
+    console.error(error.message);
+    res.status(500).json({ message: "Issue deleting user by ID" });
+  }
+});
+
 router.get("/user/:username/:discriminator", async (req, res) => {
   try {
     const { username, discriminator } = req.params;
@@ -36,6 +47,20 @@ router.get("/user/:username/:discriminator", async (req, res) => {
   } catch (error) {
     console.error(error.message);
     res.status(500).json({ message: "Issue retrieving a user by user's tag" });
+  }
+});
+
+router.post("/user/:username/:discriminator/:role", async (req, res) => {
+  try {
+    const { username, discriminator, role } = req.params;
+    const user = await pool.query(
+      "INSERT INTO users (username, discriminator, role) VALUES ($1, $2, $3) RETURNING *",
+      [username, discriminator, role]
+    );
+    res.status(200).json(user.rows);
+  } catch (error) {
+    console.error(error.message);
+    res.status(500).json({ message: "Issue creating a user" });
   }
 });
 
