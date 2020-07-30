@@ -1,5 +1,5 @@
 require("dotenv").config();
-const checkPermission = require("../../utils/checkPermission");
+const { checkPermission } = require("../../utils/permission");
 
 const admin = {
   name: "!admin",
