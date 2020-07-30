@@ -1,6 +1,5 @@
 require("dotenv").config();
-const { checkRole } = require("../../utils/api/users.api");
-const { home } = require("../../utils/api/home.api");
+const checkPermission = require("../../utils/checkPermission");
 
 const admin = {
   name: "!admin",
@@ -8,15 +7,11 @@ const admin = {
   execute: async (msg, args) => {
     try {
       const { username, discriminator } = msg.author;
-      const userRole = await checkRole(username, discriminator);
+      const user = await checkPermission(username, discriminator);
 
-      if (userRole !== "admin") return msg.reply("Denied.");
+      if (user.role !== "admin") return await msg.reply("Access denied.");
 
       await msg.reply("Admin commands granted");
-
-      const homeMessage = await home();
-
-      await msg.channel.send(homeMessage);
     } catch (error) {
       console.error(error.message);
       await msg.reply("There was an issue connecting to the API server.");
