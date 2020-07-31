@@ -5,6 +5,25 @@ const { getLinks, getLinksByChannel } = require("../../utils/api/messages.api");
 const getListOfCommands = require("../../utils/getListOfCommands");
 
 const adminCommands = {
+  kill: {
+    name: "kill",
+    args: "kill",
+    description: "Kill bot process",
+    run: async (msg) => {
+      let countDown = 5;
+
+      msg.channel.send(`Shutting down in ${countDown}...`);
+
+      setInterval(async () => {
+        countDown--;
+        if (countDown === 0) {
+          await msg.channel.send("Goodbye.");
+          return process.exit(22);
+        }
+        return msg.channel.send(`${countDown}...`);
+      }, 1000);
+    },
+  },
   allLinks: {
     name: "links",
     args: "links",
@@ -66,6 +85,7 @@ const admin = {
   description: "Administrative commands",
   execute: async (msg, args) => {
     try {
+      if (msg.author.bot) return;
       const { username, discriminator } = msg.author;
       const user = await checkPermission(username, discriminator);
 
