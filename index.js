@@ -17,6 +17,7 @@ bot.on("ready", () => {
 
 bot.on("message", async (msg) => {
   // console.log(msg);
+  // recorder
   saveLinks(msg);
   if (doesNotContainCommand(msg)) return;
 
