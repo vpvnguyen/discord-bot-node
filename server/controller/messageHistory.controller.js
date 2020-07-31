@@ -59,12 +59,26 @@ router.get("/user/:id/curses", async (req, res) => {
 router.get("/links", async (req, res) => {
   try {
     const messages = await pool.query(
-      "SELECT * FROM messages WHERE has_link = true"
+      "SELECT users.username, users.discriminator, messages.message, messages.channel, messages.date FROM users INNER JOIN messages ON users.user_id = messages.user_id WHERE users.user_id = 1 AND messages.has_link = true;"
     );
     res.status(200).json(messages.rows);
   } catch (error) {
     console.error(error.message);
     res.status(500).json({ message: "Issue retrieving links" });
+  }
+});
+
+router.get("/links/:channel", async (req, res) => {
+  try {
+    const { channel } = req.params;
+    const messages = await pool.query(
+      "SELECT * FROM messages WHERE has_link = true AND channel = $1",
+      [channel]
+    );
+    res.status(200).json(messages.rows);
+  } catch (error) {
+    console.error(error.message);
+    res.status(500).json({ message: `Issue retrieving links from ${channel}` });
   }
 });
 
