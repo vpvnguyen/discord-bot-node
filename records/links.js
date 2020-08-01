@@ -1,6 +1,9 @@
 const links = {
-  saveLinks: async () => {
+  saveLinks: async (msg) => {
     console.log("saveLinks");
+    if (msg.content.includes("http" || "www" || ".com") && !msg.author.bot) {
+      // call api
+    }
   },
 };
 
