@@ -1,10 +1,33 @@
 require("dotenv").config();
 const { MessageEmbed } = require("discord.js");
+const dayjs = require("dayjs");
 const { checkPermission } = require("../../utils/permission");
 const { getLinks, getLinksByChannel } = require("../../utils/api/messages.api");
 const getListOfCommands = require("../../utils/getListOfCommands");
+const constant = require("../../utils/constant");
 
 const adminCommands = {
+  help: {
+    name: "help",
+    args: "help",
+    description: "Admin help",
+    run: () => {
+      const listOfCommands = getListOfCommands(adminCommands);
+      const embededMessage = new MessageEmbed()
+        .setColor(constant.theme.admin)
+        .setDescription(`List of admin commands:`)
+        .addFields({
+          name: "\u200B",
+          value: listOfCommands.map(
+            (command) =>
+              `\`!admin ${command.args}\`\n • ${command.description}\n`
+          ),
+        })
+        .setFooter(constant.author);
+
+      return embededMessage;
+    },
+  },
   kill: {
     name: "kill",
     args: "kill",
@@ -28,56 +51,34 @@ const adminCommands = {
     name: "links",
     args: "links",
     description: "Get history of all links",
-    run: async () => {
+    run: async (msg) => {
       try {
         const links = await getLinks();
-        console.log.name(links);
-        const embededMessage = new MessageEmbed().setDescription({
-          name: "",
-          value: "",
-        });
-
+        console.log(links);
+        const embededMessage = new MessageEmbed()
+          .setColor(constant.theme.admin)
+          .setDescription(
+            `There are [${links.length}] link(s) recorded since ${dayjs(
+              links[0].date
+            ).format("MM-DD-YYYY hh:mma")}:`
+          )
+          .addFields(
+            links.map((value) => {
+              return {
+                name: `${value.username}#${value.discriminator} | ${value.channel}`,
+                value: `${value.message}\n${dayjs(value.date).format(
+                  "MM-DD-YYYY hh:mma"
+                )}`,
+              };
+            })
+          )
+          .setFooter(constant.author);
         return embededMessage;
       } catch (error) {
-        return await msg.reply("Issue getting links");
+        console.error(error.message);
       }
     },
   },
-};
-
-const saveLinks = (msg) => {
-  if (msg.content.includes("http" || "www" || ".com") && !msg.author.bot) {
-    links.push({
-      author: msg.author.username,
-      content: msg.content,
-      date: new Date(),
-    });
-  }
-};
-
-const accessLinks = async (msg) => {
-  console.log(links);
-  if (links.length === 0) return msg.reply("There are no links");
-  const embededMessage = new MessageEmbed()
-    .setColor("#32a8a8")
-    .setDescription(
-      `There are [${links.length}] link(s) recorded since ${dayjs(
-        links[0].date
-      ).format("MM-DD-YYYY hh:mma")}:`
-    )
-    .addFields(
-      links.map((value) => {
-        return {
-          name: `${value.author} | ${dayjs(value.date).format(
-            "MM-DD-YYYY hh:mma"
-          )}`,
-          value: `${value.content}`,
-        };
-      })
-    )
-    .setFooter("github.com/vpvnguyen");
-
-  await msg.channel.send(embededMessage);
 };
 
 const admin = {
@@ -91,12 +92,25 @@ const admin = {
 
       if (user.role !== "admin") return await msg.reply("Access denied.");
 
-      await msg.reply("Admin commands granted");
-      const listOfCommands = getListOfCommands(adminCommands);
-      console.log(listOfCommands);
+      // if there are no args
+      if (args < 1) return msg.channel.send(adminCommands.help.run());
+
+      // define args
+      let command;
+      const commandName = args[0];
+      const param = `${args[1]} ${args[2] ? args[2] : ""}`;
+
+      // find api command from command name
+      Object.keys(adminCommands).map((key) => {
+        if (commandName === adminCommands[key].name)
+          return (command = adminCommands[key]);
+      });
+
+      const embededMessage = await command.run(param);
+      await msg.channel.send(embededMessage);
     } catch (error) {
       console.error(error.message);
-      await msg.reply("There was an issue connecting to the API server.");
+      await msg.reply("There was an issue authenticating the user.");
     }
   },
 };
