@@ -1,13 +1,13 @@
 const { MessageEmbed } = require("discord.js");
 const dayjs = require("dayjs");
-const constant = require("../../utils/constant");
+const { embedLayout } = require("../../utils/constant");
 
 const whoAmI = {
   name: "!whoami",
   description: "I am, who I say I am",
   execute: async (msg, args) => {
     const embededMessage = new MessageEmbed()
-      .setColor(constant.theme.default)
+      .setColor(embedLayout.theme.default)
       .setThumbnail(
         `https://cdn.discordapp.com/avatars/${msg.author.id}/${msg.author.avatar}`
       )
@@ -27,7 +27,7 @@ const whoAmI = {
           )}\nServer Location: ${msg.channel.guild.region}`,
         }
       )
-      .setFooter(constant.author);
+      .setFooter(embedLayout.author);
     await msg.channel.send(embededMessage);
   },
 };

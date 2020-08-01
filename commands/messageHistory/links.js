@@ -1,12 +1,12 @@
 const { MessageEmbed } = require("discord.js");
-const constant = require("../../utils/constant");
+const { embedLayout } = require("../../utils/constant");
 
 const links = {
   name: "!links",
   description: "Retrieve message history of links",
   execute: async (msg, args) => {
     const embedMessage = new MessageEmbed()
-      .setColor(constant.theme.default)
+      .setColor(embedLayout.theme.default)
       .setTitle("I AM SUGOI-BOT!")
       .setDescription("The most sugoi-est bot at your service! Beep Boop.")
       .addFields(
@@ -20,7 +20,7 @@ const links = {
           value: "https://github.com/vpvnguyen/discord-bot-node/issues/new",
         }
       )
-      .setFooter(constant.author);
+      .setFooter(embedLayout.author);
 
     await msg.channel.send(embedMessage);
   },

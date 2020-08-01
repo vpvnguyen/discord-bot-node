@@ -1,6 +1,6 @@
 const { MessageEmbed } = require("discord.js");
 const getListOfCommands = require("../utils/getListOfCommands");
-const constant = require("../utils/constant");
+const { embedLayout } = require("../utils/constant");
 
 const commands = {
   // self
@@ -22,7 +22,7 @@ const commands = {
       const listOfCommands = getListOfCommands(commands);
 
       const embededMessage = new MessageEmbed()
-        .setColor(constant.theme.default)
+        .setColor(embedLayout.theme.default)
         .setDescription(`Here is what I can do:`)
         .addFields({
           name: "\u200B",
@@ -34,7 +34,7 @@ const commands = {
           name: "\u200B",
           value: "Try typing in one of these commands!\nExample: `!covid`",
         })
-        .setFooter(constant.author);
+        .setFooter(embedLayout.author);
 
       msg.channel.send(embededMessage);
     },

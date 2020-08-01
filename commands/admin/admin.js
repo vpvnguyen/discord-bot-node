@@ -4,7 +4,7 @@ const dayjs = require("dayjs");
 const { checkPermission } = require("../../utils/permission");
 const { getLinks, getLinksByChannel } = require("../../utils/api/messages.api");
 const getListOfCommands = require("../../utils/getListOfCommands");
-const constant = require("../../utils/constant");
+const { embedLayout } = require("../../utils/constant");
 
 const adminCommands = {
   help: {
@@ -14,7 +14,7 @@ const adminCommands = {
     run: () => {
       const listOfCommands = getListOfCommands(adminCommands);
       const embededMessage = new MessageEmbed()
-        .setColor(constant.theme.admin)
+        .setColor(embedLayout.theme.admin)
         .setDescription(`List of admin commands:`)
         .addFields({
           name: "\u200B",
@@ -23,7 +23,7 @@ const adminCommands = {
               `\`!admin ${command.args}\`\n • ${command.description}\n`
           ),
         })
-        .setFooter(constant.author);
+        .setFooter(embedLayout.author);
 
       return embededMessage;
     },
@@ -56,7 +56,7 @@ const adminCommands = {
         const links = await getLinks();
         console.log(links);
         const embededMessage = new MessageEmbed()
-          .setColor(constant.theme.admin)
+          .setColor(embedLayout.theme.admin)
           .setDescription(
             `There are [${links.length}] link(s) recorded since ${dayjs(
               links[0].date
@@ -72,7 +72,7 @@ const adminCommands = {
               };
             })
           )
-          .setFooter(constant.author);
+          .setFooter(embedLayout.author);
         return embededMessage;
       } catch (error) {
         console.error(error.message);

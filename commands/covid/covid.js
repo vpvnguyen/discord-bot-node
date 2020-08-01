@@ -1,6 +1,6 @@
 const { MessageEmbed } = require("discord.js");
 const dayjs = require("dayjs");
-const constant = require("../../utils/constant");
+const { embedLayout } = require("../../utils/constant");
 const getListOfCommands = require("../../utils/getListOfCommands");
 const formatNumber = require("../../utils/formatNumber");
 
@@ -21,7 +21,7 @@ const apiCommand = {
       console.log(listOfCommands);
 
       const embededMessage = new MessageEmbed()
-        .setColor(constant.theme.covid)
+        .setColor(embedLayout.theme.covid)
         .setDescription(`Here is what I can do:`)
         .addFields(
           {
@@ -37,7 +37,7 @@ const apiCommand = {
           }
         )
         .setFooter(
-          `Data sourced from Johns Hopkins University, the New York Times, Worldometers, and Apple reports to give you a comprehensive view of the data.\n\n${constant.author}`
+          `Data sourced from Johns Hopkins University, the New York Times, Worldometers, and Apple reports to give you a comprehensive view of the data.\n\n${embedLayout.author}`
         );
 
       return embededMessage;
@@ -55,7 +55,7 @@ const apiCommand = {
         if (response.message) return response.message;
 
         const embededMessage = new MessageEmbed()
-          .setColor(constant.theme.covid)
+          .setColor(embedLayout.theme.covid)
           .setDescription(`Here are the results Worldwide:`)
           .addFields(
             {
@@ -98,7 +98,7 @@ const apiCommand = {
           .setFooter(
             `Last updated ${dayjs(response.updated).format(
               "MM-DD-YYYY HH:mm"
-            )} from ${baseUrl.split("//")[1]} • ${constant.author}`
+            )} from ${baseUrl.split("//")[1]} • ${embedLayout.author}`
           );
 
         return embededMessage;
@@ -120,7 +120,7 @@ const apiCommand = {
           return `${response.message}... Try for example \`!covid country usa\``;
 
         const embededMessage = new MessageEmbed()
-          .setColor(constant.theme.covid)
+          .setColor(embedLayout.theme.covid)
           .setDescription(`Here are the results for ${response.country}:`)
           .setThumbnail(response.countryInfo.flag)
           .addFields(
@@ -160,7 +160,7 @@ const apiCommand = {
           .setFooter(
             `Last updated ${dayjs(response.updated).format(
               "MM-DD-YYYY HH:mm"
-            )} from ${baseUrl.split("//")[1]} • ${constant.author}`
+            )} from ${baseUrl.split("//")[1]} • ${embedLayout.author}`
           );
 
         return embededMessage;
@@ -183,7 +183,7 @@ const apiCommand = {
           return `${response.message}... Try for example \`!covid state california\``;
 
         const embededMessage = new MessageEmbed()
-          .setColor(constant.theme.covid)
+          .setColor(embedLayout.theme.covid)
           .setDescription(`Here are the results for ${response.state}:`)
           .addFields(
             {
@@ -200,7 +200,7 @@ const apiCommand = {
               )}\nTotal: ${formatNumber(response.deaths)}`,
               inline: true,
             },
-            constant.inlineSpace,
+            embedLayout.inlineSpace,
             {
               name: "Analytics",
               value: `Active: ${formatNumber(
@@ -211,7 +211,7 @@ const apiCommand = {
           .setFooter(
             `Last updated ${dayjs(response.updated).format(
               "MM-DD-YYYY HH:mm"
-            )} from ${baseUrl.split("//")[1]} • ${constant.author}`
+            )} from ${baseUrl.split("//")[1]} • ${embedLayout.author}`
           );
 
         return embededMessage;
@@ -234,7 +234,7 @@ const apiCommand = {
           return `${response.message}... Try for example \`!covid county orange\``;
 
         const embededMessage = new MessageEmbed()
-          .setColor(constant.theme.covid)
+          .setColor(embedLayout.theme.covid)
           .setDescription(`Here are the totals for \`${county}\`:`)
           .addFields(
             response.map((data) => {
@@ -254,7 +254,7 @@ const apiCommand = {
           .setFooter(
             `Updated: ${dayjs(response[0].updatedAt).format(
               "MM-DD-YYYY HH:mm"
-            )} • ${baseUrl.split("//")[1]} • ${constant.author}`
+            )} • ${baseUrl.split("//")[1]} • ${embedLayout.author}`
           );
 
         return embededMessage;
