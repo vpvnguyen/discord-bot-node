@@ -1,7 +1,9 @@
 require("dotenv").config();
 const { Client, Collection } = require("discord.js");
 const { messageContent } = require("./utils/constant");
+const { saveMessage } = require("./utils/api/messages.api");
 const botCommands = require("./commands");
+const messagesApi = require("./utils/api/messages.api");
 
 const bot = new Client();
 bot.commands = new Collection();
@@ -25,11 +27,23 @@ const record = (msg) => {
   let hasLink = false;
   let amountCurse = 0;
 
+  // does message have a link
   if (msg.content.match(messageContent.url)) hasLink = true;
 
+  // determine if msg contains curse words
+
+  // package link and curse to be sent to API
   if (hasLink || amountCurse > 0) {
-    // pass msg into records
-    return console.log("recording message");
+    let recordMessage = {
+      username: msg.author.username,
+      discriminator: msg.author.discriminator,
+      message: msg.content,
+      channel: msg.channel.guild.name,
+      hasLink,
+      amountCurse,
+      date: new Date(),
+    };
+    saveMessage(recordMessage);
   }
 };
 
