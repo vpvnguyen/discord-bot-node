@@ -57,6 +57,10 @@ DB_PASSWORD=database password
 
 - Base project: `git clone https://github.com/sitepoint-editors/discord-bot-sitepoint`
 
+## CDN Endpoints
+
+https://discord.com/developers/docs/reference#image-formatting-cdn-endpoints
+
 ### Technologies
 
 - node
