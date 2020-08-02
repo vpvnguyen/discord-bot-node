@@ -7,19 +7,11 @@ const links = {
   execute: async (msg, args) => {
     const embedMessage = new MessageEmbed()
       .setColor(embedLayout.theme.default)
-      .setTitle("I AM SUGOI-BOT!")
-      .setDescription("The most sugoi-est bot at your service! Beep Boop.")
-      .addFields(
-        {
-          name: "Want to contribute?",
-          value:
-            "Visit https://www.github.com/vpvnguyen/discord-bot-node to make me better!",
-        },
-        {
-          name: "Am I broken? Please let my author know!",
-          value: "https://github.com/vpvnguyen/discord-bot-node/issues/new",
-        }
-      )
+      .setDescription(`${msg.channel.guild.name} link history`)
+      .addFields({
+        name: "Get Link",
+        value: "Get Link",
+      })
       .setFooter(embedLayout.author);
 
     await msg.channel.send(embedMessage);
