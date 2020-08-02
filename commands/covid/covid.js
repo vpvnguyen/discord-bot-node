@@ -94,8 +94,8 @@ const apiCommand = {
           )
           .setFooter(
             `Last updated ${dayjs(response.updated).format(
-              "MM-DD-YYYY HH:mm"
-            )} from ${baseUrl.split("//")[1]} • ${embedLayout.author}`
+              "MM-DD-YYYY h:mma"
+            )} GMT from ${baseUrl.split("//")[1]} • ${embedLayout.author}`
           );
 
         return embededMessage;
@@ -155,8 +155,8 @@ const apiCommand = {
           )
           .setFooter(
             `Last updated ${dayjs(response.updated).format(
-              "MM-DD-YYYY HH:mm"
-            )} from ${baseUrl.split("//")[1]} • ${embedLayout.author}`
+              "MM-DD-YYYY h:mma"
+            )} GMT from ${baseUrl.split("//")[1]} • ${embedLayout.author}`
           );
 
         return embededMessage;
@@ -204,8 +204,8 @@ const apiCommand = {
           )
           .setFooter(
             `Last updated ${dayjs(response.updated).format(
-              "MM-DD-YYYY HH:mm"
-            )} from ${baseUrl.split("//")[1]} • ${embedLayout.author}`
+              "MM-DD-YYYY h:mma"
+            )} GMT from ${baseUrl.split("//")[1]} • ${embedLayout.author}`
           );
 
         return embededMessage;
@@ -245,8 +245,8 @@ const apiCommand = {
           )
           .setFooter(
             `Updated: ${dayjs(response[0].updatedAt).format(
-              "MM-DD-YYYY HH:mm"
-            )} • ${baseUrl.split("//")[1]} • ${embedLayout.author}`
+              "MM-DD-YYYY h:mma"
+            )} GMT • ${baseUrl.split("//")[1]} • ${embedLayout.author}`
           );
 
         return embededMessage;
