@@ -31,17 +31,20 @@ const record = (msg) => {
   if (msg.content.match(messageContent.url)) hasLink = true;
 
   // determine if msg contains curse words
-
+  console.log(msg);
   // package link and curse to be sent to API
   if (hasLink || amountCurse > 0) {
     let recordMessage = {
+      userId: msg.author.id,
       username: msg.author.username,
       discriminator: msg.author.discriminator,
+      messageId: msg.id,
       message: msg.content,
+      channelId: msg.channel.guild.id,
       channel: msg.channel.guild.name,
       hasLink,
       amountCurse,
-      date: new Date(),
+      date: msg.createdTimestamp,
     };
     saveMessage(recordMessage);
   }
