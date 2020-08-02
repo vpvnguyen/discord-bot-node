@@ -13,4 +13,4 @@ app.get("/", (req, res) => {
 app.use("/api", require("./controller/users.controller"));
 app.use("/api", require("./controller/messageHistory.controller"));
 
-app.listen(PORT, () => console.log(`API SERVER RUNNING ON PORT: ${PORT}`));
+app.listen(PORT, () => console.info(`API SERVER RUNNING ON PORT: ${PORT}`));
