@@ -7,10 +7,12 @@ const PORT = process.env.PORT || 5000;
 app.use(express.json());
 
 app.get("/", (req, res) => {
-  res.json({ message: `${process.env.ADMIN}'s API Server` });
+  res.json({
+    message: `${process.env.ADMIN ? process.env.ADMIN : "Anon"}'s API Server`,
+  });
 });
 
 app.use("/api", require("./controller/users.controller"));
-app.use("/api", require("./controller/messageHistory.controller"));
+app.use("/api", require("./controller/messages.controller"));
 
-app.listen(PORT, () => console.info(`API SERVER RUNNING ON PORT: ${PORT}`));
+app.listen(PORT, () => console.info(`API SERVER RUNNING ON localhost:${PORT}`));
