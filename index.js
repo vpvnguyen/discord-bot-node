@@ -29,9 +29,8 @@ const record = (msg) => {
   // does message have a link
   if (msg.content.match(messageContent.url)) hasLink = true;
 
-  // determine if msg contains profanity
+  // TODO: determine if msg contains profanity
 
-  // package link and curse to be sent to API
   if (hasLink || profanityCount > 0) {
     let recordMessage = {
       userId: msg.author.id,
