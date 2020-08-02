@@ -24,7 +24,7 @@ bot.on("message", async (msg) => {
 
 const record = (msg) => {
   let hasLink = false;
-  let amountCurse = 0;
+  let profanityCount = 0;
 
   // does message have a link
   if (msg.content.match(messageContent.url)) hasLink = true;
@@ -32,7 +32,7 @@ const record = (msg) => {
   // determine if msg contains profanity
 
   // package link and curse to be sent to API
-  if (hasLink || amountCurse > 0) {
+  if (hasLink || profanityCount > 0) {
     let recordMessage = {
       userId: msg.author.id,
       username: msg.author.username,
@@ -42,7 +42,7 @@ const record = (msg) => {
       channelId: msg.channel.guild.id,
       channel: msg.channel.guild.name,
       hasLink,
-      amountCurse,
+      profanityCount,
       date: msg.createdTimestamp,
     };
     saveMessage(recordMessage);
