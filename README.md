@@ -36,6 +36,13 @@ Discord bot built on Node.js running on Raspberry Pi OS
 
 ## Setup Postgres database
 
+- Use default user `postgres`
+- Connect to postgres: `sudo -u postgres psql postgres`
+- Inside postgres console, change password to match what would be in the `.env`: `\password postgres`
+- Locate `pg_hba.conf` file. Generally under `/etc/postgres/VERSION/main/pg_hba.conf`
+- Change method to `md5`
+  > local all postgres md5
+- Restart postgres after saving the file: `sudo service postgresql restart`
 - In the project's repo, navigate to `./server/config/db.seed.sql`
 - Run the seed script to populate the DB structure
 
