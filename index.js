@@ -3,7 +3,6 @@ const { Client, Collection } = require("discord.js");
 const { messageContent } = require("./utils/constant");
 const { saveMessage } = require("./utils/api/messages.api");
 const botCommands = require("./commands");
-const messagesApi = require("./utils/api/messages.api");
 
 const bot = new Client();
 bot.commands = new Collection();
@@ -31,7 +30,7 @@ const record = (msg) => {
   if (msg.content.match(messageContent.url)) hasLink = true;
 
   // determine if msg contains curse words
-  console.log(msg);
+
   // package link and curse to be sent to API
   if (hasLink || amountCurse > 0) {
     let recordMessage = {
