@@ -12,6 +12,8 @@ const commands = {
   invite: require("./self/invite"),
   // covid
   covid: require("./covid/covid"),
+  // message history
+  links: require("./messageHistory/links"),
   // admin
   admin: require("./admin/admin"),
   // commands
