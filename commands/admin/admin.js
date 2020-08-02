@@ -2,7 +2,7 @@ require("dotenv").config();
 const { MessageEmbed } = require("discord.js");
 const dayjs = require("dayjs");
 const { checkPermission } = require("../../utils/permission");
-const { getLinks, getLinksByChannel } = require("../../utils/api/messages.api");
+const { getLinks } = require("../../utils/api/messages.api");
 const getListOfCommands = require("../../utils/getListOfCommands");
 const { embedLayout } = require("../../utils/constant");
 
@@ -54,12 +54,15 @@ const adminCommands = {
     run: async (msg) => {
       try {
         const links = await getLinks();
+
+        if (links.length === 0) return msg.reply("There were no links found.");
+
         const embededMessage = new MessageEmbed()
           .setColor(embedLayout.theme.admin)
           .setDescription(
             `There are [${links.length}] link(s) recorded since ${dayjs(
               links[0].date
-            ).format("MM-DD-YYYY hh:mma")}:`
+            ).format("MM-DD-YYYY hh:mma")}`
           )
           .addFields(
             links.map((value) => {
@@ -71,7 +74,7 @@ const adminCommands = {
               };
             })
           )
-          .setFooter(embedLayout.author);
+          .setFooter(`Timezone is GMT | ${embedLayout.author}`);
         return embededMessage;
       } catch (error) {
         console.error(error.message);
