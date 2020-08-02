@@ -1,13 +1,13 @@
-const getListOfCommands = (parentObject) => {
-  const commandKeys = Object.keys(parentObject);
+const getListOfCommands = (commandObject) => {
+  const commandKeys = Object.keys(commandObject);
   const commandList = commandKeys.map((keys) => {
     return {
-      name: parentObject[keys].name,
-      key: parentObject[keys],
-      description: parentObject[keys].description
-        ? parentObject[keys].description
+      name: commandObject[keys].name,
+      key: commandObject[keys],
+      description: commandObject[keys].description
+        ? commandObject[keys].description
         : "",
-      args: parentObject[keys].args ? parentObject[keys].args : "",
+      args: commandObject[keys].args ? commandObject[keys].args : "",
     };
   });
 
