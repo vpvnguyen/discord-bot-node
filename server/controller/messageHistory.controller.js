@@ -56,35 +56,45 @@ router.get("/user/:id/curses", async (req, res) => {
   }
 });
 
-router.post("/save-link", async (req, res) => {
+router.post("/message", async (req, res) => {
   try {
-    const { username, discriminator, message, channel } = req.body;
-    let userId;
-    const amountCurse = 0; // refactor to take in curse detection
+    console.log(req.body);
+    // {
+    //   username: 'sugoisauce',
+    //   discriminator: '1862',
+    //   message: 'example.com',
+    //   channel: 'sugoidev',
+    //   hasLink: true,
+    //   amountCurse: 0,
+    //   date: 2020-08-02T03:40:19.227Z
+    // }
+    // const { username, discriminator, message, channel, hasLink, amountCurse } = req.body;
+    // let userId;
+    // const amountCurse = 0; // refactor to take in curse detection
 
-    // check if user exists, get user_id
-    const users = await pool.query(
-      "SELECT user_id FROM users WHERE username = $1 AND discriminator = $2",
-      [username, discriminator]
-    );
+    // // check if user exists, get user_id
+    // const users = await pool.query(
+    //   "SELECT user_id FROM users WHERE username = $1 AND discriminator = $2",
+    //   [username, discriminator]
+    // );
 
-    // if user does not exist, add user to users table
-    if (users.rows.length > 0) userId = users.rows[0].user_id;
-    if (users.rows.length === 0) {
-      const saveUser = await pool.query(
-        "INSERT INTO users (username, discriminator, role) VALUES ($1, $2, $3) RETURNING user_id",
-        [username, discriminator, "user"]
-      );
-      userId = saveUser.rows[0].user_id;
-    }
+    // // if user does not exist, add user to users table
+    // if (users.rows.length > 0) userId = users.rows[0].user_id;
+    // if (users.rows.length === 0) {
+    //   const saveUser = await pool.query(
+    //     "INSERT INTO users (username, discriminator, role) VALUES ($1, $2, $3) RETURNING user_id",
+    //     [username, discriminator, "user"]
+    //   );
+    //   userId = saveUser.rows[0].user_id;
+    // }
 
-    // take user_id and add to messages
-    const saveMessage = await pool.query(
-      "INSERT INTO messages (message, channel, has_link, amount_curse, date, user_id) VALUES ($1, $2, $3, $4, $5, $6) RETURNING *",
-      [message, channel, true, amountCurse, new Date(), userId]
-    );
+    // // take user_id and add to messages
+    // const saveMessage = await pool.query(
+    //   "INSERT INTO messages (message, channel, has_link, amount_curse, date, user_id) VALUES ($1, $2, $3, $4, $5, $6) RETURNING *",
+    //   [message, channel, true, amountCurse, new Date(), userId]
+    // );
 
-    res.status(200).json(saveMessage);
+    res.status(200).json(req.body);
   } catch (error) {
     console.error(error.message);
     res.status(500).json({ message: "Issue saving link" });
