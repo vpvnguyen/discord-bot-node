@@ -12,8 +12,11 @@ const messagesApi = {
     return linksByChannel.data;
   },
   saveMessage: async (recordMessage) => {
-    // message, channel, has_link, amoun_curse, date user_id
-    console.log(recordMessage);
+    const message = await axios.post(
+      "http://localhost:5000/api/message",
+      recordMessage
+    );
+    return console.log(message.data);
   },
 };
 
