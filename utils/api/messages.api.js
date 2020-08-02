@@ -11,6 +11,10 @@ const messagesApi = {
     );
     return linksByChannel.data;
   },
+  saveMessage: async (recordMessage) => {
+    // message, channel, has_link, amoun_curse, date user_id
+    console.log(recordMessage);
+  },
 };
 
 module.exports = messagesApi;
