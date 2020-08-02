@@ -5,9 +5,9 @@ const messagesApi = {
     const links = await axios.get(`http://localhost:5000/api/links`);
     return links.data;
   },
-  getLinksByChannel: async (channel) => {
+  getLinksByChannel: async (channelId) => {
     const linksByChannel = await axios.get(
-      `http://localhost:5000/api/links/${channel}`
+      `http://localhost:5000/api/links/${channelId}`
     );
     return linksByChannel.data;
   },
