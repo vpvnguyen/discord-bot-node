@@ -18,8 +18,6 @@ const apiCommand = {
     run: () => {
       const listOfCommands = getListOfCommands(apiCommand);
 
-      console.log(listOfCommands);
-
       const embededMessage = new MessageEmbed()
         .setColor(embedLayout.theme.covid)
         .setDescription(`Here is what I can do:`)
@@ -50,7 +48,6 @@ const apiCommand = {
     run: async () => {
       try {
         const response = await novelCovidApi.all();
-        console.log(response);
 
         if (response.message) return response.message;
 
@@ -114,7 +111,6 @@ const apiCommand = {
     run: async (country) => {
       try {
         const response = await novelCovidApi.countries({ country });
-        console.log(response);
 
         if (response.message)
           return `${response.message}... Try for example \`!covid country usa\``;
@@ -176,8 +172,6 @@ const apiCommand = {
     run: async (state) => {
       try {
         const response = await novelCovidApi.states({ state });
-        console.log(`\nRetrieving API data for: ${state}`);
-        console.log(response);
 
         if (response.message)
           return `${response.message}... Try for example \`!covid state california\``;
@@ -227,8 +221,6 @@ const apiCommand = {
     run: async (county) => {
       try {
         const response = await novelCovidApi.jhucsse.counties({ county });
-        console.log(`\nRetrieving API data for: ${county}`);
-        console.log(response);
 
         if (response.message)
           return `${response.message}... Try for example \`!covid county orange\``;
@@ -270,9 +262,6 @@ const covid = {
   description: "Covid data by command",
   execute: async (msg, args) => {
     try {
-      console.log("\n---execute---");
-      console.log(`msg.content: ${msg.content}\n`);
-
       // if there are no args
       if (args < 1) return msg.channel.send(apiCommand.help.run());
 

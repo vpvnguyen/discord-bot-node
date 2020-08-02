@@ -1,6 +1,6 @@
 const { MessageEmbed } = require("discord.js");
-const getListOfCommands = require("../utils/getListOfCommands");
 const { embedLayout } = require("../utils/constant");
+const getListOfCommands = require("../utils/getListOfCommands");
 
 const commands = {
   // self
@@ -15,7 +15,7 @@ const commands = {
   // admin
   admin: require("./admin/admin"),
   // commands
-  commands: {
+  commandList: {
     name: "!commands",
     description: "List of commands",
     execute(msg, args) {

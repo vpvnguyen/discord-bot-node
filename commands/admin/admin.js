@@ -54,7 +54,6 @@ const adminCommands = {
     run: async (msg) => {
       try {
         const links = await getLinks();
-        console.log(links);
         const embededMessage = new MessageEmbed()
           .setColor(embedLayout.theme.admin)
           .setDescription(
