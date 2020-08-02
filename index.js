@@ -29,7 +29,7 @@ const record = (msg) => {
   // does message have a link
   if (msg.content.match(messageContent.url)) hasLink = true;
 
-  // determine if msg contains curse words
+  // determine if msg contains profanity
 
   // package link and curse to be sent to API
   if (hasLink || amountCurse > 0) {
@@ -50,7 +50,6 @@ const record = (msg) => {
 };
 
 const checkCommands = (msg) => {
-  console.log("check commands");
   const args = msg.content.split(/ +/);
   const command = args.shift().toLowerCase();
 
