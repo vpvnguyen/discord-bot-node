@@ -2,6 +2,7 @@ require("dotenv").config();
 const { MessageEmbed } = require("discord.js");
 const dayjs = require("dayjs");
 const { checkPermission } = require("../../utils/permission");
+const { users } = require("../../utils/api/users.api");
 const { getLinks } = require("../../utils/api/messages.api");
 const getListOfCommands = require("../../utils/getListOfCommands");
 const { embedLayout } = require("../../utils/constant");
@@ -81,6 +82,61 @@ const adminCommands = {
       }
     },
   },
+  getAllUsers: {
+    name: "all-users",
+    args: "all-users",
+    description: "Retrieve all users info",
+    run: async () => {
+      try {
+        const allUsers = await users.getAllUsers();
+
+        if (allUsers.length === 0)
+          return msg.reply("There were no users found.");
+
+        const embededMessage = new MessageEmbed()
+          .setColor(embedLayout.theme.admin)
+          .setDescription(`There are [${allUsers.length}] user(s)`)
+          .addFields(
+            allUsers.map((value) => {
+              return {
+                name: `${value.username}#${value.discriminator}`,
+                value: `ID: ${value.id}\nuser_id: ${value.user_id}\nRole: ${value.role}`,
+              };
+            })
+          )
+          .setFooter(`Timezone is GMT | ${embedLayout.author}`);
+
+        return embededMessage;
+      } catch (error) {
+        console.error(error.message);
+      }
+    },
+  },
+  updateRole: {
+    name: "update-role",
+    args: "update-role [userId] [role]",
+    description: "Update user's role based on user's ID",
+    run: async (params) => {
+      try {
+        const [userId, role] = params;
+        const newUserRole = await users.updateRole(userId, role);
+        const embededMessage = new MessageEmbed()
+          .setColor(embedLayout.theme.admin)
+          .setDescription(
+            `Updated ${newUserRole.username}#${newUserRole.discriminator}'s role!`
+          )
+          .addFields({
+            name: `${newUserRole.username}#${newUserRole.discriminator}`,
+            value: `ID: ${newUserRole.id}\nuser_id: ${newUserRole.user_id}\nRole: ${newUserRole.role}`,
+          })
+          .setFooter(embedLayout.author);
+
+        return embededMessage;
+      } catch (error) {
+        console.error(error.message);
+      }
+    },
+  },
 };
 
 const admin = {
@@ -98,21 +154,21 @@ const admin = {
       if (args < 1) return msg.channel.send(adminCommands.help.run());
 
       // define args
-      let command;
-      const commandName = args[0];
-      const param = `${args[1]} ${args[2] ? args[2] : ""}`;
+      const [commandName, ...params] = args;
 
       // find api command from command name
-      Object.keys(adminCommands).map((key) => {
-        if (commandName === adminCommands[key].name)
+      let command;
+      Object.keys(adminCommands).filter((key) => {
+        if (commandName === adminCommands[key].name) {
           return (command = adminCommands[key]);
+        }
       });
 
-      const embededMessage = await command.run(param);
+      const embededMessage = await command.run(params);
       await msg.channel.send(embededMessage);
     } catch (error) {
       console.error(error.message);
-      await msg.reply("There was an issue authenticating the user.");
+      await msg.reply("Invalid command or authentication issue.");
     }
   },
 };
