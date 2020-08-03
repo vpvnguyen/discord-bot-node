@@ -1,6 +1,19 @@
 const axios = require("axios");
 
 const usersApi = {
+  users: {
+    getAllUsers: async () => {
+      const users = await axios.get(`http://localhost:5000/api/users`);
+      return users.data;
+    },
+    updateRole: async (userId, role) => {
+      const updateRole = await axios.put(
+        `http://localhost:5000/api/user/update-role`,
+        { userId, role }
+      );
+      return updateRole.data[0];
+    },
+  },
   checkRole: async (username, discriminator) => {
     const user = await axios.get(
       `http://localhost:5000/api/user/${username}/${discriminator}`
