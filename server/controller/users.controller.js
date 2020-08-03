@@ -36,6 +36,20 @@ router.delete("/user/:id", async (req, res) => {
   }
 });
 
+router.put("/user/update-role", async (req, res) => {
+  try {
+    const { userId, role } = req.body;
+    const updateRole = await pool.query(
+      "UPDATE users SET role = $1 WHERE user_id = $2 RETURNING *",
+      [role, userId]
+    );
+    res.status(200).json(updateRole.rows);
+  } catch (error) {
+    console.error(error.message);
+    res.status(500).json({ message: "Issue updating user's role" });
+  }
+});
+
 router.get("/user/:username/:discriminator", async (req, res) => {
   try {
     const { username, discriminator } = req.params;
