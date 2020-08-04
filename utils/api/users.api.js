@@ -13,6 +13,12 @@ const usersApi = {
       );
       return updateRole.data[0];
     },
+    deleteByUserId: async (userId) => {
+      const deleteUserByUserId = await axios.delete(
+        `http://localhost:5000/api/user/${userId}`
+      );
+      return deleteUserByUserId.message;
+    },
   },
   checkRole: async (username, discriminator) => {
     const user = await axios.get(
