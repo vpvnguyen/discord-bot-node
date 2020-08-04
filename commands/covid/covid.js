@@ -1,22 +1,21 @@
 const { MessageEmbed } = require("discord.js");
-const dayjs = require("dayjs");
-const { embedLayout } = require("../../utils/constant");
-const getListOfCommands = require("../../utils/getListOfCommands");
-const formatNumber = require("../../utils/formatNumber");
-
 const novelCovidApi = require("novelcovid");
+const dayjs = require("dayjs");
+const { getListOfCommands } = require("../../utils/command.util");
+const formatNumber = require("../../utils/formatNumber");
+const { embedLayout } = require("../../utils/constant");
 
 const baseUrl = "https://disease.sh";
 
 novelCovidApi.settings({ baseUrl });
 
-const apiCommand = {
+const covidCommands = {
   help: {
     name: "help",
     args: "help",
     description: "List of `!covid` commands",
     run: () => {
-      const listOfCommands = getListOfCommands(apiCommand);
+      const listOfCommands = getListOfCommands(covidCommands);
 
       const embededMessage = new MessageEmbed()
         .setColor(embedLayout.theme.covid)
@@ -257,31 +256,4 @@ const apiCommand = {
   },
 };
 
-const covid = {
-  name: "!covid",
-  description: "Covid data by command",
-  execute: async (msg, args) => {
-    try {
-      // if there are no args
-      if (args < 1) return msg.channel.send(apiCommand.help.run());
-
-      // define args
-      let command;
-      const commandName = args[0];
-      const param = `${args[1]} ${args[2] ? args[2] : ""}`;
-
-      // find api command from command name
-      Object.keys(apiCommand).map((key) => {
-        if (commandName === apiCommand[key].name)
-          return (command = apiCommand[key]);
-      });
-
-      const embededMessage = await command.run(param);
-      await msg.channel.send(embededMessage);
-    } catch (error) {
-      console.error(error.message);
-    }
-  },
-};
-
-module.exports = covid;
+module.exports = covidCommands;

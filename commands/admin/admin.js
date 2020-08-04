@@ -1,10 +1,8 @@
-require("dotenv").config();
 const { MessageEmbed } = require("discord.js");
 const dayjs = require("dayjs");
-const { checkPermission } = require("../../utils/permission");
 const { users } = require("../../utils/api/users.api");
 const { getLinks } = require("../../utils/api/messages.api");
-const getListOfCommands = require("../../utils/getListOfCommands");
+const { getListOfCommands } = require("../../utils/command.util");
 const { embedLayout } = require("../../utils/constant");
 
 const adminCommands = {
@@ -139,38 +137,4 @@ const adminCommands = {
   },
 };
 
-const admin = {
-  name: "!admin",
-  description: "Administrative commands",
-  execute: async (msg, args) => {
-    try {
-      if (msg.author.bot) return;
-      const { username, discriminator } = msg.author;
-      const user = await checkPermission(username, discriminator);
-
-      if (user.role !== "admin") return await msg.reply("Access denied.");
-
-      // if there are no args
-      if (args < 1) return msg.channel.send(adminCommands.help.run());
-
-      // define args
-      const [commandName, ...params] = args;
-
-      // find api command from command name
-      let command;
-      Object.keys(adminCommands).filter((key) => {
-        if (commandName === adminCommands[key].name) {
-          return (command = adminCommands[key]);
-        }
-      });
-
-      const embededMessage = await command.run(params);
-      await msg.channel.send(embededMessage);
-    } catch (error) {
-      console.error(error.message);
-      await msg.reply("Invalid command or authentication issue.");
-    }
-  },
-};
-
-module.exports = admin;
+module.exports = adminCommands;

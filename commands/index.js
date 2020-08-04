@@ -1,6 +1,6 @@
 const { MessageEmbed } = require("discord.js");
 const { embedLayout } = require("../utils/constant");
-const getListOfCommands = require("../utils/getListOfCommands");
+const { getListOfCommands } = require("../utils/command.util");
 
 const commands = {
   // self
@@ -11,11 +11,11 @@ const commands = {
   stupidBot: require("./self/stupidBot"),
   invite: require("./self/invite"),
   // covid
-  covid: require("./covid/covid"),
+  covid: require("./covid"),
   // message history
   links: require("./messageHistory/links"),
   // admin
-  admin: require("./admin/admin"),
+  admin: require("./admin"),
   // commands
   commandList: {
     name: "!commands",
