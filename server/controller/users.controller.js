@@ -28,11 +28,24 @@ router.get("/user/:id", async (req, res) => {
 router.delete("/user/:id", async (req, res) => {
   try {
     const { id } = req.params;
-    const user = await pool.query("DELETE FROM users WHERE user_id = $1", [id]);
+    const user = await pool.query("DELETE FROM users WHERE id = $1", [id]);
     res.status(200).json({ message: `User ${id} has been deleted` });
   } catch (error) {
     console.error(error.message);
     res.status(500).json({ message: "Issue deleting user by ID" });
+  }
+});
+
+router.delete("/user/:userId", async (req, res) => {
+  try {
+    const { userId } = req.params;
+    const user = await pool.query("DELETE FROM users WHERE user_id = $1", [
+      userId,
+    ]);
+    res.status(200).json({ message: `UserID ${userId} has been deleted` });
+  } catch (error) {
+    console.error(error.message);
+    res.status(500).json({ message: "Issue deleting user" });
   }
 });
 
