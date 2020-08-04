@@ -12,6 +12,7 @@ const adminCommands = {
     description: "Admin help",
     run: () => {
       const listOfCommands = getListOfCommands(adminCommands);
+
       const embededMessage = new MessageEmbed()
         .setColor(embedLayout.theme.admin)
         .setDescription(`List of admin commands:`)
@@ -118,6 +119,7 @@ const adminCommands = {
       try {
         const [userId, role] = params;
         const newUserRole = await users.updateRole(userId, role);
+
         const embededMessage = new MessageEmbed()
           .setColor(embedLayout.theme.admin)
           .setDescription(
