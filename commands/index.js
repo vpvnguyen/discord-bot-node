@@ -13,7 +13,7 @@ const commands = {
   // covid
   covid: require("./covid"),
   // message history
-  links: require("./messageHistory/links"),
+  links: require("./messageHistory"),
   // admin
   admin: require("./admin"),
   // commands
