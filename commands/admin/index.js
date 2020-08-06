@@ -1,6 +1,6 @@
 const adminCommands = require("./admin");
-const { checkPermission } = require("../../utils/permission.util");
 const { findCommand } = require("../../utils/command.util");
+const { users } = require("../../utils/api/users.api");
 
 const admin = {
   name: "!admin",
@@ -10,7 +10,7 @@ const admin = {
       if (msg.author.bot) return;
 
       const { username, discriminator } = msg.author;
-      const user = await checkPermission(username, discriminator);
+      const user = await users.checkRole(username, discriminator);
 
       if (user.role !== "admin") return await msg.reply("Access denied.");
       if (args < 1) return msg.channel.send(adminCommands.help.run());
