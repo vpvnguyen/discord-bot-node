@@ -19,12 +19,12 @@ const usersApi = {
       );
       return deleteUserByUserId.message;
     },
-  },
-  checkRole: async (username, discriminator) => {
-    const user = await axios.get(
-      `http://localhost:5000/api/user/${username}/${discriminator}`
-    );
-    return user.data[0].role;
+    checkRole: async (username, discriminator) => {
+      const user = await axios.get(
+        `http://localhost:5000/api/user/${username}/${discriminator}`
+      );
+      return user.data[0];
+    },
   },
 };
 
