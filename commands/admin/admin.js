@@ -82,8 +82,8 @@ const adminCommands = {
     },
   },
   getAllUsers: {
-    name: "all-users",
-    args: "all-users",
+    name: "users",
+    args: "users",
     description: "Retrieve all users info",
     run: async () => {
       try {
