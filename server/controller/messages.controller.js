@@ -1,6 +1,7 @@
 const express = require("express");
 const router = express.Router();
 const pool = require("../config/db.config");
+const { recentMessageByDate } = require("../utils/sort.utils");
 
 router.get("/messages", async (req, res) => {
   try {
@@ -112,7 +113,8 @@ router.get("/links", async (req, res) => {
     const messages = await pool.query(
       "SELECT users.username, users.discriminator, messages.message, messages.channel, messages.date FROM users INNER JOIN messages ON users.user_id = messages.user_id WHERE messages.has_link = true"
     );
-    res.status(200).json(messages.rows);
+    const sortMessageDate = recentMessageByDate(messages.rows);
+    res.status(200).json(sortMessageDate);
   } catch (error) {
     console.error(error.message);
     res.status(500).json({ message: "Issue retrieving links" });
@@ -126,7 +128,8 @@ router.get("/links/:channelId", async (req, res) => {
       "SELECT users.username, users.discriminator, messages.message, messages.channel, messages.date FROM users INNER JOIN messages ON users.user_id = messages.user_id WHERE messages.has_link = true AND messages.channel_id = $1",
       [channelId]
     );
-    res.status(200).json(messages.rows);
+    const sortMessageDate = recentMessageByDate(messages.rows);
+    res.status(200).json(sortMessageDate);
   } catch (error) {
     console.error(error.message);
     res.status(500).json({ message: "Issue retrieving links" });
