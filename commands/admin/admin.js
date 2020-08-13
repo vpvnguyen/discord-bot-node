@@ -61,7 +61,7 @@ const adminCommands = {
           .setColor(embedLayout.theme.admin)
           .setDescription(
             `There are [${links.length}] link(s) recorded since ${dayjs(
-              links[0].date
+              links[links.length - 1].date
             ).format("MM-DD-YYYY hh:mma")}`
           )
           .addFields(
