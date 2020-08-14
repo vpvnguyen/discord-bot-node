@@ -1,13 +1,13 @@
 const { MessageEmbed } = require("discord.js");
 const dayjs = require("dayjs");
 const { embedLayout } = require("../../utils/constant");
-const { getLinksByChannel } = require("../../utils/api/messages.api");
+const { getLinksByChannelId } = require("../../utils/api/messages.api");
 
 const links = {
   name: "!links",
   description: "Retrieve channel's message history containing links",
   execute: async (msg, args) => {
-    const channelLinks = await getLinksByChannel(msg.channel.guild.id);
+    const channelLinks = await getLinksByChannelId(msg.channel.guild.id);
 
     if (channelLinks.length === 0)
       return msg.reply(
