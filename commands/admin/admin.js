@@ -110,16 +110,19 @@ const adminCommands = {
     name: "links-channel",
     args: "links-channel [channel_name]",
     description: "Retrieve links by channel",
-    run: async (channel) => {
+    run: async (channelName) => {
       try {
-        const linksByChannel = await getLinksByChannel(channel);
+        const linksByChannel = await getLinksByChannel(...channelName);
 
         const embededMessage = new MessageEmbed()
           .setColor(embedLayout.theme.admin)
           .setDescription(
             `There are [${
               linksByChannel.length
-            }] link(s) recorded in ${channel} since ${dayjs(
+            }] link(s) recorded in ${channelName.replace(
+              /,/g,
+              " "
+            )} since ${dayjs(
               linksByChannel[linksByChannel.length - 1].date
             ).format("MM-DD-YYYY hh:mma")}`
           )
