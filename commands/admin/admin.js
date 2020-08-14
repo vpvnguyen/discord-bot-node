@@ -4,7 +4,6 @@ const { users } = require("../../utils/api/users.api");
 const { getLinks, getLinksByChannel } = require("../../utils/api/messages.api");
 const { getListOfCommands } = require("../../utils/command.util");
 const { embedLayout } = require("../../utils/constant");
-const links = require("../messageHistory");
 
 const adminCommands = {
   help: {
