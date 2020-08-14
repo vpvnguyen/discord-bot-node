@@ -4,6 +4,7 @@ const { users } = require("../../utils/api/users.api");
 const { getLinks, getLinksByChannel } = require("../../utils/api/messages.api");
 const { getListOfCommands } = require("../../utils/command.util");
 const { embedLayout } = require("../../utils/constant");
+const links = require("../messageHistory");
 
 const adminCommands = {
   help: {
@@ -110,19 +111,21 @@ const adminCommands = {
     name: "links-channel",
     args: "links-channel [channel_name]",
     description: "Retrieve links by channel",
-    run: async (channelName) => {
+    run: async (channel) => {
+      const channelName = channel.join(",").replace(/,/g, " ");
+
       try {
-        const linksByChannel = await getLinksByChannel(...channelName);
+        const linksByChannel = await getLinksByChannel(channelName);
+
+        if (linksByChannel.length === 0)
+          return `There were no links found from [${channelName}]`;
 
         const embededMessage = new MessageEmbed()
           .setColor(embedLayout.theme.admin)
           .setDescription(
             `There are [${
               linksByChannel.length
-            }] link(s) recorded in ${channelName.replace(
-              /,/g,
-              " "
-            )} since ${dayjs(
+            }] link(s) recorded in ${channelName} since ${dayjs(
               linksByChannel[linksByChannel.length - 1].date
             ).format("MM-DD-YYYY hh:mma")}`
           )
@@ -141,7 +144,7 @@ const adminCommands = {
         return embededMessage;
       } catch (error) {
         console.error(error.message);
-        return `Could not find links from channel [${channel}]`;
+        return `Could not find links from channel [${channelName}]`;
       }
     },
   },
