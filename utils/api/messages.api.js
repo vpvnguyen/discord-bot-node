@@ -17,6 +17,12 @@ const messagesApi = {
     );
     return linksByChannelId.data;
   },
+  getLinksByUsername: async (username) => {
+    const linksByUsername = await axios.get(
+      `http://localhost:5000/api/links/username/${username}`
+    );
+    return linksByUsername.data;
+  },
   saveMessage: async (recordMessage) => {
     const message = await axios.post(
       "http://localhost:5000/api/message",
