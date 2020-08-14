@@ -1,7 +1,11 @@
 const { MessageEmbed } = require("discord.js");
 const dayjs = require("dayjs");
 const { users } = require("../../utils/api/users.api");
-const { getLinks, getLinksByChannel } = require("../../utils/api/messages.api");
+const {
+  getLinks,
+  getLinksByChannel,
+  getLinksByUsername,
+} = require("../../utils/api/messages.api");
 const { getListOfCommands } = require("../../utils/command.util");
 const { embedLayout } = require("../../utils/constant");
 
@@ -39,8 +43,13 @@ const adminCommands = {
         }, 1000);
       });
 
-      exit.then((exit) => exit);
-      return `Goodbye...`;
+      try {
+        exit.then((exit) => exit);
+        return `Goodbye...`;
+      } catch (error) {
+        console.error(error.message);
+        return `There was an issue killing bot process.`;
+      }
     },
   },
   allLinks: {
@@ -74,6 +83,41 @@ const adminCommands = {
         return embededMessage;
       } catch (error) {
         console.error(error.message);
+        return `Issue getting all links.`;
+      }
+    },
+  },
+  getAllLinksByUsername: {
+    name: "links-user",
+    args: "links-user [username]",
+    run: async (params) => {
+      const [username] = params;
+      try {
+        const links = await getLinksByUsername(username);
+        if (links.length === 0) return `No links found from ${username}.`;
+
+        const embededMessage = new MessageEmbed()
+          .setColor(embedLayout.theme.admin)
+          .setDescription(
+            `There are [${links.length}] link(s) recorded since ${dayjs(
+              links[links.length - 1].date
+            ).format("MM-DD-YYYY hh:mma")}`
+          )
+          .addFields(
+            links.map((value) => {
+              return {
+                name: `${value.username}#${value.discriminator} | ${value.channel}`,
+                value: `${value.message}\n${dayjs(value.date).format(
+                  "MM-DD-YYYY hh:mma"
+                )}`,
+              };
+            })
+          )
+          .setFooter(`Timezone is GMT | ${embedLayout.author}`);
+        return embededMessage;
+      } catch (error) {
+        console.error(error.message);
+        return `Issue getting links from ${username}.`;
       }
     },
   },
@@ -103,6 +147,7 @@ const adminCommands = {
         return embededMessage;
       } catch (error) {
         console.error(error.message);
+        return `Issue getting all users.`;
       }
     },
   },
@@ -143,7 +188,7 @@ const adminCommands = {
         return embededMessage;
       } catch (error) {
         console.error(error.message);
-        return `Could not find links from channel [${channelName}]`;
+        return `There was an issue getting links from channel [${channelName}]`;
       }
     },
   },
@@ -170,7 +215,7 @@ const adminCommands = {
         return embededMessage;
       } catch (error) {
         console.error(error.message);
-        return `Could not update-role of ${userId}`;
+        return `There was an issue updating user ID ${userId} to ${role}`;
       }
     },
   },
