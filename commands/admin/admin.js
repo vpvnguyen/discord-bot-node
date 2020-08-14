@@ -1,7 +1,7 @@
 const { MessageEmbed } = require("discord.js");
 const dayjs = require("dayjs");
 const { users } = require("../../utils/api/users.api");
-const { getLinks } = require("../../utils/api/messages.api");
+const { getLinks, getLinksByChannel } = require("../../utils/api/messages.api");
 const { getListOfCommands } = require("../../utils/command.util");
 const { embedLayout } = require("../../utils/constant");
 
@@ -32,30 +32,26 @@ const adminCommands = {
     name: "kill",
     args: "kill",
     description: "Kill bot process",
-    run: async (msg) => {
-      let countDown = 5;
+    run: () => {
+      const exit = new Promise((resolve, reject) => {
+        setTimeout(() => {
+          resolve(process.exit(22));
+        }, 1000);
+      });
 
-      msg.channel.send(`Shutting down in ${countDown}...`);
-
-      setInterval(async () => {
-        countDown--;
-        if (countDown === 0) {
-          await msg.channel.send("Goodbye.");
-          return process.exit(22);
-        }
-        return msg.channel.send(`${countDown}...`);
-      }, 1000);
+      exit.then((exit) => exit);
+      return `Goodbye...`;
     },
   },
   allLinks: {
     name: "links",
     args: "links",
     description: "Get history of all links",
-    run: async (msg) => {
+    run: async () => {
       try {
         const links = await getLinks();
 
-        if (links.length === 0) return msg.reply("There were no links found.");
+        if (links.length === 0) return `There were no links found`;
 
         const embededMessage = new MessageEmbed()
           .setColor(embedLayout.theme.admin)
@@ -89,8 +85,7 @@ const adminCommands = {
       try {
         const allUsers = await users.getAllUsers();
 
-        if (allUsers.length === 0)
-          return msg.reply("There were no users found.");
+        if (allUsers.length === 0) return `There were no users found`;
 
         const embededMessage = new MessageEmbed()
           .setColor(embedLayout.theme.admin)
@@ -111,13 +106,49 @@ const adminCommands = {
       }
     },
   },
+  getLinkByChannel: {
+    name: "links-channel",
+    args: "links-channel [channel_name]",
+    description: "Retrieve links by channel",
+    run: async (channel) => {
+      try {
+        const linksByChannel = await getLinksByChannel(channel);
+
+        const embededMessage = new MessageEmbed()
+          .setColor(embedLayout.theme.admin)
+          .setDescription(
+            `There are [${
+              linksByChannel.length
+            }] link(s) recorded in ${channel} since ${dayjs(
+              linksByChannel[linksByChannel.length - 1].date
+            ).format("MM-DD-YYYY hh:mma")}`
+          )
+          .addFields(
+            linksByChannel.map((value) => {
+              return {
+                name: `${value.username}#${value.discriminator} | ${value.channel}`,
+                value: `${value.message}\n${dayjs(value.date).format(
+                  "MM-DD-YYYY hh:mma"
+                )}`,
+              };
+            })
+          )
+          .setFooter(`Timezone is GMT | ${embedLayout.author}`);
+
+        return embededMessage;
+      } catch (error) {
+        console.error(error.message);
+        return `Could not find links from channel [${channel}]`;
+      }
+    },
+  },
   updateRole: {
     name: "update-role",
     args: "update-role [userId] [role]",
     description: "Update user's role based on user's ID",
     run: async (params) => {
+      const [userId, role] = params;
       try {
-        const [userId, role] = params;
         const newUserRole = await users.updateRole(userId, role);
 
         const embededMessage = new MessageEmbed()
@@ -134,6 +165,7 @@ const adminCommands = {
         return embededMessage;
       } catch (error) {
         console.error(error.message);
+        return `Could not update-role of ${userId}`;
       }
     },
   },
