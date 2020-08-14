@@ -5,11 +5,17 @@ const messagesApi = {
     const links = await axios.get(`http://localhost:5000/api/links`);
     return links.data;
   },
-  getLinksByChannel: async (channelId) => {
+  getLinksByChannel: async (channel) => {
     const linksByChannel = await axios.get(
-      `http://localhost:5000/api/links/${channelId}`
+      `http://localhost:5000/api/links/channel/${channel}`
     );
     return linksByChannel.data;
+  },
+  getLinksByChannelId: async (channelId) => {
+    const linksByChannelId = await axios.get(
+      `http://localhost:5000/api/links/channel/id/${channelId}`
+    );
+    return linksByChannelId.data;
   },
   saveMessage: async (recordMessage) => {
     const message = await axios.post(
