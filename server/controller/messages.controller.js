@@ -3,6 +3,7 @@ const router = express.Router();
 const pool = require("../config/db.config");
 const { recentMessageByDate } = require("../utils/sort.utils");
 
+// get all messages
 router.get("/messages", async (req, res) => {
   try {
     const messages = await pool.query("SELECT * FROM messages");
@@ -13,6 +14,7 @@ router.get("/messages", async (req, res) => {
   }
 });
 
+// get messages by user id
 router.get("/user/:id/messages", async (req, res) => {
   try {
     const { id } = req.params;
@@ -29,6 +31,7 @@ router.get("/user/:id/messages", async (req, res) => {
   }
 });
 
+// get all messages containing profanity
 router.get("/profanity-messages", async (req, res) => {
   try {
     const messages = await pool.query(
@@ -41,6 +44,7 @@ router.get("/profanity-messages", async (req, res) => {
   }
 });
 
+// get messages from user id containing profanity
 router.get("/user/:id/profanity", async (req, res) => {
   try {
     const { id } = req.params;
@@ -57,6 +61,7 @@ router.get("/user/:id/profanity", async (req, res) => {
   }
 });
 
+// record message
 router.post("/message", async (req, res) => {
   try {
     const {
@@ -108,6 +113,7 @@ router.post("/message", async (req, res) => {
   }
 });
 
+// get all messages with links
 router.get("/links", async (req, res) => {
   try {
     const messages = await pool.query(
@@ -121,6 +127,7 @@ router.get("/links", async (req, res) => {
   }
 });
 
+// get all messages with links by channel name
 router.get("/links/channel/:channel", async (req, res) => {
   try {
     const { channel } = req.params;
@@ -136,6 +143,7 @@ router.get("/links/channel/:channel", async (req, res) => {
   }
 });
 
+// get all messages by channel id
 router.get("/links/channel/id/:channelId", async (req, res) => {
   try {
     const { channelId } = req.params;
@@ -148,6 +156,24 @@ router.get("/links/channel/id/:channelId", async (req, res) => {
   } catch (error) {
     console.error(error.message);
     res.status(500).json({ message: "Issue retrieving links" });
+  }
+});
+
+// get links from username
+router.get("/links/username/:username", async (req, res) => {
+  const { username } = req.params;
+  try {
+    const messages = await pool.query(
+      "SELECT users.username, users.discriminator, messages.message, messages.channel, messages.date FROM users INNER JOIN messages ON users.user_id = messages.user_id WHERE users.username = $1",
+      [username]
+    );
+    const sortMessageDate = recentMessageByDate(messages.rows);
+    res.status(200).json(sortMessageDate);
+  } catch (error) {
+    console.error(error.message);
+    res
+      .status(500)
+      .json({ message: `Issue retrieving links from ${username}` });
   }
 });
 
