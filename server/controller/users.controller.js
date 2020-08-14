@@ -2,6 +2,7 @@ const express = require("express");
 const router = express.Router();
 const pool = require("../config/db.config");
 
+// get all users
 router.get("/users", async (req, res) => {
   try {
     const users = await pool.query("SELECT * FROM users");
@@ -12,6 +13,7 @@ router.get("/users", async (req, res) => {
   }
 });
 
+// get user by user id
 router.get("/user/:id", async (req, res) => {
   try {
     const { id } = req.params;
@@ -25,6 +27,7 @@ router.get("/user/:id", async (req, res) => {
   }
 });
 
+// delete user by user id
 router.delete("/user/:id", async (req, res) => {
   try {
     const { id } = req.params;
@@ -36,6 +39,7 @@ router.delete("/user/:id", async (req, res) => {
   }
 });
 
+// delete user by discord user_id
 router.delete("/user/:userId", async (req, res) => {
   try {
     const { userId } = req.params;
@@ -49,6 +53,7 @@ router.delete("/user/:userId", async (req, res) => {
   }
 });
 
+// update user's role by discord user_id
 router.put("/user/update-role", async (req, res) => {
   try {
     const { userId, role } = req.body;
@@ -63,6 +68,7 @@ router.put("/user/update-role", async (req, res) => {
   }
 });
 
+// get user by username#discriminator
 router.get("/user/:username/:discriminator", async (req, res) => {
   try {
     const { username, discriminator } = req.params;
@@ -77,6 +83,7 @@ router.get("/user/:username/:discriminator", async (req, res) => {
   }
 });
 
+// create new user
 router.post("/user/:username/:discriminator/:role", async (req, res) => {
   try {
     const { username, discriminator, role } = req.params;
