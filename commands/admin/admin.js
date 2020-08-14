@@ -90,6 +90,7 @@ const adminCommands = {
   getAllLinksByUsername: {
     name: "links-user",
     args: "links-user [username]",
+    description: "Retrieve links by username",
     run: async (params) => {
       const [username] = params;
       try {
@@ -215,7 +216,7 @@ const adminCommands = {
         return embededMessage;
       } catch (error) {
         console.error(error.message);
-        return `There was an issue updating user ID ${userId} to ${role}`;
+        return `There was an issue updating user ID ${userId} to ${role}.`;
       }
     },
   },
