@@ -13,6 +13,13 @@ const constant = {
       history: "#551A8B",
     },
     author: "github.com/vpvnguyen",
+    user: {
+      getIcon: (id, icon) => {
+        let fileExtension = "png";
+        if (icon.startsWith("a_")) fileExtension = "gif";
+        return `https://cdn.discordapp.com/icons/${id}/${icon}.${fileExtension}`;
+      },
+    },
     guild: {
       getIcon: (id, icon) =>
         `https://cdn.discordapp.com/icons/${id}/${icon}.png`,
