@@ -118,6 +118,33 @@ const adminCommands = {
       }
     },
   },
+  updateRole: {
+    name: "update-role",
+    args: "update-role [userId] [role]",
+    description: "Update user's role based on user's ID",
+    run: async (params) => {
+      const [userId, role] = params;
+      try {
+        const newUserRole = await users.updateRole(userId, role);
+
+        const embededMessage = new MessageEmbed()
+          .setColor(embedLayout.theme.admin)
+          .setDescription(
+            `Updated ${newUserRole.username}#${newUserRole.discriminator}'s role!`
+          )
+          .addFields({
+            name: `${newUserRole.username}#${newUserRole.discriminator}`,
+            value: `ID: ${newUserRole.id}\nuser_id: ${newUserRole.user_id}\nRole: ${newUserRole.role}`,
+          })
+          .setFooter(embedLayout.author);
+
+        return embededMessage;
+      } catch (error) {
+        console.error(error.message);
+        return `There was an issue updating user ID ${userId} to ${role}.`;
+      }
+    },
+  },
   getAllLinksByUsername: {
     name: "links-user",
     args: "links-user [username]",
@@ -195,33 +222,6 @@ const adminCommands = {
       } catch (error) {
         console.error(error.message);
         return `There was an issue getting links from channel [${channelName}]`;
-      }
-    },
-  },
-  updateRole: {
-    name: "update-role",
-    args: "update-role [userId] [role]",
-    description: "Update user's role based on user's ID",
-    run: async (params) => {
-      const [userId, role] = params;
-      try {
-        const newUserRole = await users.updateRole(userId, role);
-
-        const embededMessage = new MessageEmbed()
-          .setColor(embedLayout.theme.admin)
-          .setDescription(
-            `Updated ${newUserRole.username}#${newUserRole.discriminator}'s role!`
-          )
-          .addFields({
-            name: `${newUserRole.username}#${newUserRole.discriminator}`,
-            value: `ID: ${newUserRole.id}\nuser_id: ${newUserRole.user_id}\nRole: ${newUserRole.role}`,
-          })
-          .setFooter(embedLayout.author);
-
-        return embededMessage;
-      } catch (error) {
-        console.error(error.message);
-        return `There was an issue updating user ID ${userId} to ${role}.`;
       }
     },
   },
