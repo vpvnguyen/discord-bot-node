@@ -231,9 +231,7 @@ const adminCommands = {
     run: async (guildId) => {
       try {
         const guildData = await discordApi.guild.getGuild(guildId);
-        console.log(guildData);
-        // guildData =
-        // roles = array [id: string, name: string, permissions: number]
+
         const {
           id,
           name,
@@ -260,6 +258,7 @@ const adminCommands = {
         return embededMessage;
       } catch (error) {
         console.error(error.message);
+        return `Issue getting guild data from ID: ${guildId}`;
       }
     },
   },
@@ -270,7 +269,7 @@ const adminCommands = {
     run: async (channelId) => {
       try {
         const channelData = await discordApi.channel.getChannel(channelId);
-        console.log(channelData);
+
         const {
           id,
           last_message_id,
@@ -293,6 +292,7 @@ const adminCommands = {
         return embededMessage;
       } catch (error) {
         console.error(error.message);
+        return `Issue getting channel data from ID: ${channelId}`;
       }
     },
   },
