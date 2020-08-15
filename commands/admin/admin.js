@@ -8,6 +8,7 @@ const {
 } = require("../../utils/api/messages.api");
 const { getListOfCommands } = require("../../utils/command.util");
 const { embedLayout } = require("../../utils/constant");
+const discordApi = require("../../utils/api/discord.api");
 
 const adminCommands = {
   help: {
@@ -99,6 +100,9 @@ const adminCommands = {
 
         const embededMessage = new MessageEmbed()
           .setColor(embedLayout.theme.admin)
+          // .setThumbnail(
+          //   embedLayout.user.getIcon(msg.channel.guild.id, msg.channel.guild.icon)
+          // )
           .setDescription(
             `There are [${links.length}] link(s) recorded since ${dayjs(
               links[links.length - 1].date
@@ -217,6 +221,78 @@ const adminCommands = {
       } catch (error) {
         console.error(error.message);
         return `There was an issue updating user ID ${userId} to ${role}.`;
+      }
+    },
+  },
+  getGuild: {
+    name: "get-guild",
+    args: "get-guild [guild id]",
+    description: "Retrieve guild information",
+    run: async (guildId) => {
+      try {
+        const guildData = await discordApi.guild.getGuild(guildId);
+        console.log(guildData);
+        // guildData =
+        // roles = array [id: string, name: string, permissions: number]
+        const {
+          id,
+          name,
+          icon,
+          owner_id,
+          roles,
+          explicit_content_filter,
+          max_members,
+          premium_tier,
+        } = guildData;
+
+        const embededMessage = new MessageEmbed()
+          .setColor(embedLayout.theme.admin)
+          .setTitle(`${name} | ID: ${id}`)
+          .setDescription(
+            `icon: ${icon} | owner_id: ${owner_id} | roles ${roles} | explicit: ${explicit_content_filter} | maxMembers: ${max_members} | premiumTier: ${premium_tier}`
+          )
+          .addFields({
+            name: `name`,
+            value: `value`,
+          })
+          .setFooter(embedLayout.author);
+
+        return embededMessage;
+      } catch (error) {
+        console.error(error.message);
+      }
+    },
+  },
+  getChannel: {
+    name: "get-channel",
+    args: "get-channel [channel id]",
+    description: "Retrieve channel information",
+    run: async (channelId) => {
+      try {
+        const channelData = await discordApi.channel.getChannel(channelId);
+        console.log(channelData);
+        const {
+          id,
+          last_message_id,
+          name,
+          parent_id,
+          guild_id,
+          nsfw,
+        } = channelData;
+
+        const embededMessage = new MessageEmbed()
+          .setColor(embedLayout.theme.admin)
+          .setTitle(name)
+          .setDescription(name)
+          .addFields({
+            name: `ID: ${id} | lastMessageID: ${last_message_id} | parentID: ${parent_id} | guildID: ${guild_id} | nsfw: ${nsfw}`,
+            value: `value`,
+          })
+          .setFooter(embedLayout.author);
+
+        return embededMessage;
+      } catch (error) {
+        console.error(error.message);
       }
     },
   },
