@@ -88,44 +88,6 @@ const adminCommands = {
       }
     },
   },
-  getAllLinksByUsername: {
-    name: "links-user",
-    args: "links-user [username]",
-    description: "Retrieve links by username",
-    run: async (params) => {
-      const [username] = params;
-      try {
-        const links = await getLinksByUsername(username);
-        if (links.length === 0) return `No links found from ${username}.`;
-
-        const embededMessage = new MessageEmbed()
-          .setColor(embedLayout.theme.admin)
-          // .setThumbnail(
-          //   embedLayout.user.getIcon(msg.channel.guild.id, msg.channel.guild.icon)
-          // )
-          .setDescription(
-            `There are [${links.length}] link(s) recorded since ${dayjs(
-              links[links.length - 1].date
-            ).format("MM-DD-YYYY hh:mma")}`
-          )
-          .addFields(
-            links.map((value) => {
-              return {
-                name: `${value.username}#${value.discriminator} | ${value.channel}`,
-                value: `${value.message}\n${dayjs(value.date).format(
-                  "MM-DD-YYYY hh:mma"
-                )}`,
-              };
-            })
-          )
-          .setFooter(`Timezone is GMT | ${embedLayout.author}`);
-        return embededMessage;
-      } catch (error) {
-        console.error(error.message);
-        return `Issue getting links from ${username}.`;
-      }
-    },
-  },
   getAllUsers: {
     name: "users",
     args: "users",
@@ -153,6 +115,45 @@ const adminCommands = {
       } catch (error) {
         console.error(error.message);
         return `Issue getting all users.`;
+      }
+    },
+  },
+  getAllLinksByUsername: {
+    name: "links-user",
+    args: "links-user [username]",
+    description: "Retrieve links by username",
+    run: async (params) => {
+      const [username] = params;
+      try {
+        const links = await getLinksByUsername(username);
+        if (links.length === 0) return `No links found from ${username}.`;
+
+        const embededMessage = new MessageEmbed()
+          .setColor(embedLayout.theme.admin)
+          // TODO: get user's icon by getting user's id and avatar id
+          // .setThumbnail(
+          //   embedLayout.user.getIcon(msg.channel.guild.id, msg.channel.guild.icon)
+          // )
+          .setDescription(
+            `There are [${links.length}] link(s) recorded since ${dayjs(
+              links[links.length - 1].date
+            ).format("MM-DD-YYYY hh:mma")}`
+          )
+          .addFields(
+            links.map((value) => {
+              return {
+                name: `${value.username}#${value.discriminator} | ${value.channel}`,
+                value: `${value.message}\n${dayjs(value.date).format(
+                  "MM-DD-YYYY hh:mma"
+                )}`,
+              };
+            })
+          )
+          .setFooter(`Timezone is GMT | ${embedLayout.author}`);
+        return embededMessage;
+      } catch (error) {
+        console.error(error.message);
+        return `Issue getting links from ${username}.`;
       }
     },
   },
