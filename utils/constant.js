@@ -17,7 +17,7 @@ const constant = {
       getIcon: (id, icon) => {
         let fileExtension = "png";
         if (icon.startsWith("a_")) fileExtension = "gif";
-        return `https://cdn.discordapp.com/icons/${id}/${icon}.${fileExtension}`;
+        return `https://cdn.discordapp.com/avatars/${id}/${icon}.${fileExtension}`;
       },
     },
     guild: {
