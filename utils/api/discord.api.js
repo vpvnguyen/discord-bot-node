@@ -8,6 +8,33 @@ const OAuth2Header = {
 };
 
 const discordApi = {
+  user: {
+    getCurrentUser: async () => {
+      try {
+        const url = `${baseUrl}/users/@me`;
+        const user = await axios.get(url, OAuth2Header);
+        return user.data;
+      } catch (error) {
+        console.error(
+          "[ERROR] discordApi.user.getCurrentUser: ",
+          error.message
+        );
+        return `Issue getting current user.`;
+      }
+    },
+    getUser: async (userId) => {
+      try {
+        const url = `${baseUrl}/users/${userId}`;
+        const user = await axios.get(url, OAuth2Header);
+        return user.data;
+      } catch (error) {
+        console.error(
+          "[ERROR] discordApi.user.getUser(userId): ",
+          error.message
+        );
+      }
+    },
+  },
   channel: {
     getChannel: async (channelId) => {
       try {
