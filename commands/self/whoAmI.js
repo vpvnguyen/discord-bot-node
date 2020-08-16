@@ -4,13 +4,11 @@ const { embedLayout } = require("../../utils/constant");
 
 const whoAmI = {
   name: "!whoami",
-  description: "I am, who I say I am",
+  description: "Get your user and current channel info",
   execute: async (msg, args) => {
     const embededMessage = new MessageEmbed()
       .setColor(embedLayout.theme.default)
-      .setThumbnail(
-        `https://cdn.discordapp.com/avatars/${msg.author.id}/${msg.author.avatar}`
-      )
+      .setThumbnail(embedLayout.user.getIcon(msg.author.id, msg.author.avatar))
       .addFields(
         {
           name: "User",
