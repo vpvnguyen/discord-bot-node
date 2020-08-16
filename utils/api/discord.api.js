@@ -32,6 +32,7 @@ const discordApi = {
           "[ERROR] discordApi.user.getUser(userId): ",
           error.message
         );
+        return `Issue getting user.`;
       }
     },
   },
