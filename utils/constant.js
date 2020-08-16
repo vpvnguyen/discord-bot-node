@@ -1,3 +1,5 @@
+const discordCdnUrl = `https://cdn.discordapp.com`;
+
 const constant = {
   messageContent: {
     prefix: "!",
@@ -17,12 +19,11 @@ const constant = {
       getIcon: (id, icon) => {
         let fileExtension = "png";
         if (icon.startsWith("a_")) fileExtension = "gif";
-        return `https://cdn.discordapp.com/avatars/${id}/${icon}.${fileExtension}`;
+        return `${discordCdnUrl}/avatars/${id}/${icon}.${fileExtension}`;
       },
     },
     guild: {
-      getIcon: (id, icon) =>
-        `https://cdn.discordapp.com/icons/${id}/${icon}.png`,
+      getIcon: (id, icon) => `${discordCdnUrl}/icons/${id}/${icon}.png`,
     },
     inlineSpace: {
       name: "\u200B",
