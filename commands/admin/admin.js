@@ -8,7 +8,11 @@ const {
 } = require("../../utils/api/messages.api");
 const { getListOfCommands } = require("../../utils/command.util");
 const { embedLayout } = require("../../utils/constant");
-const discordApi = require("../../utils/api/discord.api");
+const {
+  user: { getUser },
+  channel: { getChannel },
+  guild: { getGuild },
+} = require("../../utils/api/discord.api");
 
 const adminCommands = {
   help: {
@@ -154,13 +158,12 @@ const adminCommands = {
       try {
         const links = await getLinksByUsername(username);
         if (links.length === 0) return `No links found from ${username}.`;
+        const { user_id } = links[0];
+        const { avatar } = await getUser(user_id);
 
         const embededMessage = new MessageEmbed()
           .setColor(embedLayout.theme.admin)
-          // TODO: get user's icon by getting user's id and avatar id
-          // .setThumbnail(
-          //   embedLayout.user.getIcon(msg.channel.guild.id, msg.channel.guild.icon)
-          // )
+          .setThumbnail(embedLayout.user.getIcon(user_id, avatar))
           .setDescription(
             `There are [${links.length}] link(s) recorded since ${dayjs(
               links[links.length - 1].date
@@ -193,12 +196,15 @@ const adminCommands = {
 
       try {
         const linksByChannel = await getLinksByChannel(channelName);
+        const { channel_id } = linksByChannel[0];
+        const { icon } = await getGuild(channel_id);
 
         if (linksByChannel.length === 0)
           return `There were no links found from [${channelName}]`;
 
         const embededMessage = new MessageEmbed()
           .setColor(embedLayout.theme.admin)
+          .setThumbnail(embedLayout.guild.getIcon(channel_id, icon))
           .setDescription(
             `There are [${
               linksByChannel.length
@@ -231,7 +237,7 @@ const adminCommands = {
     description: "Retrieve guild information",
     run: async (guildId) => {
       try {
-        const guildData = await discordApi.guild.getGuild(guildId);
+        const guildData = await getGuild(guildId);
 
         const {
           id,
@@ -269,7 +275,7 @@ const adminCommands = {
     description: "Retrieve channel information",
     run: async (channelId) => {
       try {
-        const channelData = await discordApi.channel.getChannel(channelId);
+        const channelData = await getChannel(channelId);
 
         const {
           id,
