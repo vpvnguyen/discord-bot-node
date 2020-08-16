@@ -132,7 +132,7 @@ router.get("/links/channel/:channel", async (req, res) => {
   try {
     const { channel } = req.params;
     const messages = await pool.query(
-      "SELECT users.username, users.discriminator, messages.message, messages.channel, messages.date FROM users INNER JOIN messages ON users.user_id = messages.user_id WHERE messages.has_link = true AND LOWER(messages.channel) = LOWER($1)",
+      "SELECT users.username, users.discriminator, messages.message, messages.channel_id, messages.channel, messages.date FROM users INNER JOIN messages ON users.user_id = messages.user_id WHERE messages.has_link = true AND LOWER(messages.channel) = LOWER($1)",
       [channel]
     );
     const sortMessageDate = recentMessageByDate(messages.rows);
