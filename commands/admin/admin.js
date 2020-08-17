@@ -232,6 +232,31 @@ const adminCommands = {
       }
     },
   },
+  getDiscordUser: {
+    name: "get-user",
+    args: "get-user [userId]",
+    description: "Get discord user's info",
+    run: async (userId) => {
+      try {
+        const discordUserData = await getUser(userId);
+        const { id, username, discriminator, avatar } = discordUserData;
+
+        const embededMessage = new MessageEmbed()
+          .setColor(embedLayout.theme.admin)
+          .setThumbnail(embedLayout.user.getIcon(id, avatar))
+          .addFields({
+            name: "User",
+            value: `Name: ${username}#${discriminator}`,
+          })
+          .setFooter(embedLayout.author);
+
+        return embededMessage;
+      } catch (error) {
+        console.error(error.message);
+        return `There was an issue getting user's discord info.`;
+      }
+    },
+  },
   getGuild: {
     name: "get-guild",
     args: "get-guild [guild id]",
