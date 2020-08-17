@@ -7,7 +7,7 @@ const {
   getLinksByUsername,
 } = require("../../utils/api/messages.api");
 const { getListOfCommands } = require("../../utils/command.util");
-const { embedLayout } = require("../../utils/constant");
+const { embedLayout, roles } = require("../../utils/constant");
 const {
   user: { getUser },
   channel: { getChannel },
@@ -129,6 +129,7 @@ const adminCommands = {
     run: async (params) => {
       const [userId, role] = params;
       try {
+        if (!roles.includes(role)) return `Invalid role. Options: [${roles}]`;
         const newUserRole = await users.updateRole(userId, role);
 
         const embededMessage = new MessageEmbed()
