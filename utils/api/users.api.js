@@ -6,6 +6,10 @@ const usersApi = {
       const users = await axios.get(`http://localhost:5000/api/users`);
       return users.data;
     },
+    getUserById: async (userId) => {
+      const user = await axios.get(`http://localhost:5000/api/user/${userId}`);
+      return user.data[0];
+    },
     updateRole: async (userId, role) => {
       const updateRole = await axios.put(
         `http://localhost:5000/api/user/update-role`,
