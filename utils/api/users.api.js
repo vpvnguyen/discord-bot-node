@@ -10,6 +10,12 @@ const usersApi = {
       const user = await axios.get(`http://localhost:5000/api/user/${userId}`);
       return user.data[0];
     },
+    getUserByUsername: async (username, discriminator) => {
+      const user = await axios.get(
+        `http://localhost:5000/api/user/${username}/${discriminator}`
+      );
+      return user.data;
+    },
     updateRole: async (userId, role) => {
       const updateRole = await axios.put(
         `http://localhost:5000/api/user/update-role`,
