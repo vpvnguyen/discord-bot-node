@@ -68,7 +68,7 @@ router.put("/user/update-role", async (req, res) => {
   }
 });
 
-// get user by username#discriminator
+// get user & discord user data by username#discriminator
 router.get("/user/:username/:discriminator", async (req, res) => {
   try {
     const { username, discriminator } = req.params;
@@ -83,7 +83,7 @@ router.get("/user/:username/:discriminator", async (req, res) => {
   }
 });
 
-// create new user
+// create new user; refactor to call discord API for more info
 router.post("/user/:username/:discriminator/:role", async (req, res) => {
   try {
     const { username, discriminator, role } = req.params;
