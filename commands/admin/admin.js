@@ -1,3 +1,4 @@
+require("dotenv").config({ path: "../../.env" });
 const { MessageEmbed } = require("discord.js");
 const dayjs = require("dayjs");
 const { users } = require("../../utils/api/users.api");
@@ -238,11 +239,28 @@ const adminCommands = {
     description: "Get discord user's info by username#tag",
     run: async (params) => {
       try {
-        const [username, discriminator] = params[0].split("#");
-        const user = await users.getUserByUsername(username, discriminator);
-        console.log(user);
-        // TODO
-        return `Got it!`;
+        const [usernameParam, discriminatorParam] = params[0].split("#");
+        const user = await users.getUserByUsername(
+          usernameParam,
+          discriminatorParam
+        );
+        if (user.length === 0) return `No user found`;
+        const discordUser = await getUser(user_id);
+        const { user_id, role } = user[0];
+        const { id, username, avatar, discriminator } = discordUser;
+
+        const embededMessage = new MessageEmbed()
+          .setColor(embedLayout.theme.admin)
+          .setThumbnail(embedLayout.user.getIcon(id, avatar))
+          .addFields({
+            name: `${username}#${discriminator}`,
+            value: `ID: ${id}\n\n${role.toUpperCase()} to ${
+              process.env.DISCORD_BOT_NAME
+            }`,
+          })
+          .setFooter(embedLayout.author);
+
+        return embededMessage;
       } catch (error) {
         console.error(error.message);
         return `There was an issue getting user's info.`;
