@@ -244,7 +244,9 @@ const adminCommands = {
           usernameParam,
           discriminatorParam
         );
-        if (user.length === 0) return `No user found`;
+
+        if (user.length === 0) return `User has not been recorded`;
+
         const discordUser = await getUser(user_id);
         const { user_id, role } = user[0];
         const { id, username, avatar, discriminator } = discordUser;
