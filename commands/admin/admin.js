@@ -232,10 +232,27 @@ const adminCommands = {
       }
     },
   },
-  getDiscordUser: {
+  getUserByUsername: {
     name: "get-user",
-    args: "get-user [userId]",
-    description: "Get discord user's info",
+    args: "get-user [username#tag]",
+    description: "Get discord user's info by username#tag",
+    run: async (params) => {
+      try {
+        const [username, discriminator] = params[0].split("#");
+        const user = await users.getUserByUsername(username, discriminator);
+        console.log(user);
+        // TODO
+        return `Got it!`;
+      } catch (error) {
+        console.error(error.message);
+        return `There was an issue getting user's info.`;
+      }
+    },
+  },
+  getUserById: {
+    name: "get-userid",
+    args: "get-userid [userId]",
+    description: "Get discord user's info by user's ID",
     run: async (userId) => {
       try {
         const discordUserData = await getUser(userId);
