@@ -246,9 +246,8 @@ const adminCommands = {
         );
 
         if (user.length === 0) return `User has not been recorded`;
-
-        const discordUser = await getUser(user_id);
         const { user_id, role } = user[0];
+        const discordUser = await getUser(user_id);
         const { id, username, avatar, discriminator } = discordUser;
 
         const embededMessage = new MessageEmbed()
