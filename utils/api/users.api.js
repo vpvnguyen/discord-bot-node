@@ -16,6 +16,13 @@ const usersApi = {
       );
       return user.data;
     },
+    addMe: async (user) => {
+      const { id, username, discriminator } = user;
+      const currentUser = await axios.post(
+        `http://localhost:5000/api/user/${id}/${username}/${discriminator}`
+      );
+      return currentUser.data[0];
+    },
     updateRole: async (userId, role) => {
       const updateRole = await axios.put(
         `http://localhost:5000/api/user/update-role`,
