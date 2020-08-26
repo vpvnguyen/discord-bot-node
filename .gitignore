@@ -103,6 +103,9 @@ dist
 # TernJS port file
 .tern-port
 
+# Google Vision Creds
+VISION_API_KEY.json
+
 # test directory
 /test/
 /sample/
