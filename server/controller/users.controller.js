@@ -83,6 +83,23 @@ router.get("/user/:username/:discriminator", async (req, res) => {
   }
 });
 
+// add current user
+router.post("/user/:userId/:username/:discriminator", async (req, res) => {
+  try {
+    console.log("server");
+
+    const { userId, username, discriminator } = req.params;
+    const user = await pool.query(
+      "INSERT INTO users (user_id, username, discriminator, role) VALUES ($1, $2, $3, $4) RETURNING *",
+      [userId, username, discriminator, "user"]
+    );
+    res.status(200).json(user.rows);
+  } catch (error) {
+    console.error(error.message);
+    res.status(500).json({ message: "Issue adding current user" });
+  }
+});
+
 // create new user; refactor to call discord API for more info
 router.post("/user/:username/:discriminator/:role", async (req, res) => {
   try {
