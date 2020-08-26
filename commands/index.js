@@ -10,6 +10,7 @@ const commands = {
   shotTime: require("./self/shotTime"),
   stupidBot: require("./self/stupidBot"),
   invite: require("./self/invite"),
+  addMe: require("./self/addMe"),
   // covid
   covid: require("./covid"),
   // message history
