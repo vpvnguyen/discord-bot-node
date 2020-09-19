@@ -167,8 +167,8 @@ const adminCommands = {
           .setColor(embedLayout.theme.admin)
           .setThumbnail(embedLayout.user.getIcon(user_id, avatar))
           .setDescription(
-            `There are [${links.length}] link(s) recorded since ${dayjs(
-              links[links.length - 1].date
+            `Here are the last [${links.length}] link(s) recorded since ${dayjs(
+              links[0].date
             ).format("MM-DD-YYYY hh:mma")}`
           )
           .addFields(
@@ -208,10 +208,10 @@ const adminCommands = {
           .setColor(embedLayout.theme.admin)
           .setThumbnail(embedLayout.guild.getIcon(channel_id, icon))
           .setDescription(
-            `There are [${
+            `Here are the last [${
               linksByChannel.length
             }] link(s) recorded in ${channelName} since ${dayjs(
-              linksByChannel[linksByChannel.length - 1].date
+              linksByChannel[0].date
             ).format("MM-DD-YYYY hh:mma")}`
           )
           .addFields(
