@@ -71,9 +71,7 @@ const adminCommands = {
         const embededMessage = new MessageEmbed()
           .setColor(embedLayout.theme.admin)
           .setDescription(
-            `There are the last [${
-              links.length
-            }] link(s) recorded since ${dayjs(
+            `Here are the last [${links.length}] link(s) recorded since ${dayjs(
               links[links.length - 1].date
             ).format("MM-DD-YYYY hh:mma")}`
           )
