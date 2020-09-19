@@ -117,7 +117,7 @@ router.post("/message", async (req, res) => {
 router.get("/links", async (req, res) => {
   try {
     const messages = await pool.query(
-      "SELECT users.username, users.discriminator, messages.message, messages.channel, messages.date FROM users INNER JOIN messages ON users.user_id = messages.user_id WHERE messages.has_link = true"
+      "SELECT users.username, users.discriminator, messages.message, messages.channel, messages.date FROM users INNER JOIN messages ON users.user_id = messages.user_id WHERE messages.has_link = true ORDER BY messages.date DESC LIMIT 15"
     );
     const sortMessageDate = recentMessageByDate(messages.rows);
     res.status(200).json(sortMessageDate);
