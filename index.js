@@ -19,8 +19,27 @@ bot.on("message", async (msg) => {
   if (msg.content.startsWith(messageContent.prefix) && !msg.author.bot)
     return checkCommands(msg);
 
+  if (msg.content.match(messageContent.mention)) return saveMention(msg);
+
   if (!msg.author.bot) return record(msg);
 });
+
+const saveMention = (msg) => {
+  console.log(msg);
+  const user = msg.author;
+  const mentionedUser = msg.mentions.users.first();
+  const message = msg.content;
+  const channel = msg.channel?.guild;
+  console.log("\n===all info===");
+  console.log("\nuser");
+  console.log(user);
+  console.log("\nmentionedUser");
+  console.log(mentionedUser);
+  console.log("\nmessage");
+  console.log(message);
+  console.log("\nchannel");
+  console.log(channel);
+};
 
 const record = (msg) => {
   let hasLink = false;
