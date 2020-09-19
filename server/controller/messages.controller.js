@@ -134,8 +134,8 @@ router.get("/links/channel/:channel", async (req, res) => {
   try {
     const { channel } = req.params;
     const messages = await pool.query(
-      "SELECT users.username, users.discriminator, messages.message, messages.channel_id, messages.channel, messages.date FROM users INNER JOIN messages ON users.user_id = messages.user_id WHERE messages.has_link = true AND LOWER(messages.channel) = LOWER($1)",
-      [channel]
+      "SELECT users.username, users.discriminator, messages.message, messages.channel_id, messages.channel, messages.date FROM users INNER JOIN messages ON users.user_id = messages.user_id WHERE messages.has_link = true AND LOWER(messages.channel) = LOWER($1) ORDER BY messages.date DESC LIMIT $2",
+      [channel, messageUtil.links.limit]
     );
     const sortMessageDate = recentMessageByDate(messages.rows);
     res.status(200).json(sortMessageDate);
@@ -150,8 +150,8 @@ router.get("/links/channel/id/:channelId", async (req, res) => {
   try {
     const { channelId } = req.params;
     const messages = await pool.query(
-      "SELECT users.username, users.discriminator, messages.message, messages.channel, messages.date FROM users INNER JOIN messages ON users.user_id = messages.user_id WHERE messages.has_link = true AND messages.channel_id = $1",
-      [channelId]
+      "SELECT users.username, users.discriminator, messages.message, messages.channel, messages.date FROM users INNER JOIN messages ON users.user_id = messages.user_id WHERE messages.has_link = true AND messages.channel_id = $1 ORDER BY messages.date DESC LIMIT $2",
+      [channelId, messageUtil.links.limit]
     );
     const sortMessageDate = recentMessageByDate(messages.rows);
     res.status(200).json(sortMessageDate);
@@ -166,8 +166,8 @@ router.get("/links/username/:username", async (req, res) => {
   const { username } = req.params;
   try {
     const messages = await pool.query(
-      "SELECT users.user_id, users.username, users.discriminator, messages.message, messages.channel, messages.date FROM users INNER JOIN messages ON users.user_id = messages.user_id WHERE LOWER(users.username) = LOWER($1)",
-      [username]
+      "SELECT users.user_id, users.username, users.discriminator, messages.message, messages.channel, messages.date FROM users INNER JOIN messages ON users.user_id = messages.user_id WHERE LOWER(users.username) = LOWER($1) ORDER BY messages.date DESC LIMIT $2",
+      [username, messageUtil.links.limit]
     );
     const sortMessageDate = recentMessageByDate(messages.rows);
     res.status(200).json(sortMessageDate);
