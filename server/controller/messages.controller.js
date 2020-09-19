@@ -2,6 +2,7 @@ const express = require("express");
 const router = express.Router();
 const pool = require("../config/db.config");
 const { recentMessageByDate } = require("../utils/sort.utils");
+const messageUtil = require("../utils/messages.utils");
 
 // get all messages
 router.get("/messages", async (req, res) => {
@@ -115,11 +116,10 @@ router.post("/message", async (req, res) => {
 
 // get all messages with links
 router.get("/links", async (req, res) => {
-  const LIMIT = 15;
   try {
     const messages = await pool.query(
       "SELECT users.username, users.discriminator, messages.message, messages.channel, messages.date FROM users INNER JOIN messages ON users.user_id = messages.user_id WHERE messages.has_link = true ORDER BY messages.date DESC LIMIT $1",
-      [LIMIT]
+      [messageUtil.links.limit]
     );
     const sortMessageDate = recentMessageByDate(messages.rows);
     res.status(200).json(sortMessageDate);
