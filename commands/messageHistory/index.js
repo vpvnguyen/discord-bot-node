@@ -20,7 +20,7 @@ const links = {
         embedLayout.guild.getIcon(msg.channel.guild.id, msg.channel.guild.icon)
       )
       .setDescription(
-        `Found ${channelLinks.length} link(s) from ${msg.channel.guild.name}`
+        `Here are the last ${channelLinks.length} link(s) from ${msg.channel.guild.name}`
       )
       .addFields(
         channelLinks.map((value) => {
