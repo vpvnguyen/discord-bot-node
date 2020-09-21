@@ -12,7 +12,7 @@ const whoAmI = {
       .addFields(
         {
           name: "User",
-          value: `Name: ${msg.author.username}#${msg.author.discriminator}`,
+          value: `ID: ${msg.author.id}\nName: ${msg.author.username}#${msg.author.discriminator}`,
         },
         {
           name: `Channel`,
