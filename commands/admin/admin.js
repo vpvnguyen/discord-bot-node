@@ -123,6 +123,39 @@ const adminCommands = {
       }
     },
   },
+  addUser: {
+    name: "add-user",
+    args: "add-user [user ID] [role]",
+    description: "Add user",
+    run: async () => {
+      try {
+        // TODO: get user ID, search user ID with discord API, add user info and role into database
+
+        // const allUsers = await users.getAllUsers();
+
+        // if (allUsers.length === 0) return `There were no users found`;
+
+        // const embededMessage = new MessageEmbed()
+        //   .setColor(embedLayout.theme.admin)
+        //   .setDescription(`There are [${allUsers.length}] user(s)`)
+        //   .addFields(
+        //     allUsers.map((value) => {
+        //       return {
+        //         name: `${value.username}#${value.discriminator}`,
+        //         value: `ID: ${value.id}\nuser_id: ${value.user_id}\nRole: ${value.role}`,
+        //       };
+        //     })
+        //   )
+        //   .setFooter(`Timezone is GMT | ${embedLayout.author}`);
+
+        // return embededMessage;
+        return "Add user to database";
+      } catch (error) {
+        console.error(error.message);
+        return `Issue getting all users.`;
+      }
+    },
+  },
   updateRole: {
     name: "update-role",
     args: "update-role [userId] [role]",
