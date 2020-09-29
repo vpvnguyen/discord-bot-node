@@ -12,7 +12,7 @@ app.get("/", (req, res) => {
   });
 });
 
-app.use("/api", require("./controller/users.controller"));
+app.use("/users", require("./routes/users.routes"));
 app.use("/api", require("./controller/messages.controller"));
 app.use("/api", require("./controller/mentions.controller"));
 
