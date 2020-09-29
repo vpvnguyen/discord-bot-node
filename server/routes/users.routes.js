@@ -2,7 +2,7 @@ const express = require("express");
 const router = express.Router();
 const UsersController = require("../controller/users.controller");
 
-router.get("/users", async (req, res) => UsersController.getAllUsers(req, res));
+router.get("/", async (req, res) => UsersController.getAllUsers(req, res));
 
 router.get("/user/:id", async (req, res) =>
   UsersController.getUserById(req, res)
