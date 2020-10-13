@@ -14,6 +14,5 @@ app.get("/", (req, res) => {
 
 app.use("/users", require("./routes/users.routes"));
 app.use("/api", require("./routes/messages.routes"));
-app.use("/api", require("./controller/mentions.controller"));
 
 app.listen(PORT, () => console.info(`API SERVER RUNNING ON localhost:${PORT}`));
