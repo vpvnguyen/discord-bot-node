@@ -22,7 +22,7 @@
     "dayjs": "^1.8.29",
     "discord.js": "^12.2.0",
     "dotenv": "^8.2.0",
-    "express": "^4.17.1",
+    "express": "^4.18.2",
     "novelcovid": "^3.0.0",
     "pg": "^8.3.0"
   }
